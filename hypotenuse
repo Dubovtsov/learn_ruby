@@ -36,10 +36,8 @@ if a == b && b == c && a == c
 	puts "Треугольник является равносторонним."
 end
 
-puts "#{sideA}, #{sideB}, #{hypotenuse}"
-puts "#{(hypotenuse**2).ceil}"
-puts "#{(hypotenuse**2).ceil} = #{sideA**2 + sideB**2}"
-
+# проверка по теореме Пифагора
+# метод ceil округляет в большую сторону
 if (hypotenuse**2).ceil == sideA**2 + sideB**2
 	puts "Треугольник прямоугольный"
 else
