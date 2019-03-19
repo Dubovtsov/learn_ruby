@@ -5,16 +5,16 @@
 puts "Программа определяет идеальный вес по Вашим параметрам."
 puts "Как Вас зовут? :"
 # Получаем ввод имени от пользователя и делаем с большой буквы (не работает с кириллицей)
-userName = gets.chomp.capitalize!
+user_name = gets.chomp.capitalize!
 
 puts "Ваш рост? :"
 # Получаем ввод роста от пользователя и конвертируем в числовой формат
-userHeight = gets.chomp.to_i
+user_height = gets.chomp.to_i
 
-idealWeight = userHeight - 110
+ideal_weight = user_height - 110
 
-if idealWeight < 0
+if ideal_weight < 0
   puts "Ваш вес уже оптимальный."
 else
-  puts "#{userName}, Ваш идеальный вес: #{idealWeight}"
+  puts "#{user_name}, Ваш идеальный вес: #{ideal_weight}"
 end
