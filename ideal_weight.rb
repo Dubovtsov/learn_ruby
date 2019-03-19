@@ -16,5 +16,5 @@ ideal_weight = user_height - 110
 if ideal_weight < 0
   puts "Ваш вес уже оптимальный."
 else
-  puts "#{ user_name }, Ваш идеальный вес: #{ ideal_weight }"
+  puts "#{user_name}, Ваш идеальный вес: #{ideal_weight}"
 end
