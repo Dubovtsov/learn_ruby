@@ -13,7 +13,7 @@ sides << gets.chomp.to_f
 puts "Введите сторону c :"
 sides << gets.chomp.to_f
 
-a, b, c, = sides.sort!
+a, b, c = sides.sort!
 
 puts "Треугольник является равнобедренным." if a == b && a != c || a == c && a != b || b == c && b != a
 
