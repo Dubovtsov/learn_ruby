@@ -1,3 +1,7 @@
+##############################################
+# Программа выводит месяцы в которых 30 дней #
+##############################################
+
 months = {
   январь: 31,
   февраль: 28,
@@ -13,5 +17,11 @@ months = {
   декабрь: 31
   }
 
-short_months = months.select { |name, day| day == 30 }
-puts short_months
+# short_months = months.select { |name, day| day == 30 }
+# puts short_months
+
+months.each do |name, day|
+  if day == 30
+    puts name
+  end
+end
