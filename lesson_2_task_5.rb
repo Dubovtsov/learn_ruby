@@ -44,11 +44,11 @@ loop do
       
 
       hash_mdays.each do |key, value| 
-        if key < month
+        break if key > month
           d = 0
           d += value
-          puts d + number_of_the_day_in_the_month
-        end
+          puts d + number_of_the_day_in_the_month        
+        
       end
     end
 
