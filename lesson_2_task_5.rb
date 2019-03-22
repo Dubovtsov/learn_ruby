@@ -2,23 +2,38 @@
 # Опрделение порядкового номера введенной даты #
 ################################################
 
-loop do
-  puts "Введите произвольную дату в формате 00.00.0000:"
-  date = gets.chomp.split(".")
-  date = date.map{ |e| e.to_i}
+require 'date'
 
-  if date[0] < 1 || date[0] > 31
-    puts "Неправильная дата"
-  elsif date[1] < 1 || date[1] > 12
-    puts "Неправильный месяц"
-  elsif date[2] < 1900 || date[2] > 2050
-    puts "Год должен быть в интервале 1900..2050"
-  else
-    break
-    print date
-  end
-  
+def month_days(month,year=Date.today.year)
+ mdays = [0,31,28,31,30,31,30,31,31,30,31,30,31]
+ mdays[2] = 29 if year % 400 == 0 || year % 4 == 0
+ mdays[month]
+ puts mdays.inject(0){ |res, mday| res + mday }
 end
+# array.inject(0){ |result, elem| result + elem }
+
+
+puts month_days(2,2016)
+
+# loop do
+#   puts "Введите произвольную дату в формате 00.00.0000:"
+#   date = gets.chomp.split(".")
+#   date = date.map{ |e| e.to_i}
+
+#   if date[0] < 1 || date[0] > 31
+#     puts "Неправильная дата"
+#   elsif date[1] < 1 || date[1] > 12
+#     puts "Неправильный месяц"
+#   elsif date[2] < 1900 || date[2] > 2050
+#     puts "Год должен быть в интервале 1900..2050"
+#   else
+#     break
+#     print date
+#   end
+  
+# end
+
+
 
 # Високосный год определяется по следующему правилу:
 # Год високосный, если он делится на четыре без остатка, 
