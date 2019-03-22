@@ -35,12 +35,14 @@ loop do
   u_month = date[1]
   u_year = date[2]
 
+  # Минимальная проверка ввода
   if u_day < 1 || u_day > 31
     puts "Неправильное число"
   elsif u_month < 1 || u_month > 12
     puts "Неправильный месяц"
+  # Просто захотел такой интервал
   elsif u_year < 1000 || u_year > 2500
-    puts "Год должен быть в интервале 1900..2050"
+    puts "Год должен быть в интервале 1000..2500"
   else
     month_days(u_month, u_year, u_day)
     
