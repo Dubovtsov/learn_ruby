@@ -1,26 +1,29 @@
-# Сумма покупок. 
-# Пользователь вводит поочередно название товара, цену за единицу и кол-во купленного товара (может быть нецелым числом). 
-# Пользователь может ввести произвольное кол-во товаров до тех пор, пока не введет "стоп" в качестве названия товара. 
-# На основе введенных данных требуетеся:
-  # Заполнить и вывести на экран хеш, ключами которого являются названия товаров, а значением - вложенный хеш, 
-  # содержащий цену за единицу товара и кол-во купленного товара. Также вывести итоговую сумму за каждый товар.
-  # Вычислить и вывести на экран итоговую сумму всех покупок в "корзине".
+######################
+# Корзина в магазине #
+######################
 
 user_cart = {}
-quantity_and_price = {}
+total = 0
 
 loop do
-
+  quantity_and_price = {}
   puts "Введите название товара:"
   item = gets.chomp
   break if item == "стоп"
 
   puts "Введите цену товара за единицу:"
-  quantity_and_price.store("price", gets.chomp.to_f)
+  price = gets.chomp.to_f
+  quantity_and_price.store("price", price)
 
-  puts "Введите количество купленного товара:"
-  quantity_and_price.store("quantity", gets.chomp.to_i)
+  puts "Введите количество товара:"
+  quantity = gets.chomp.to_i
+  quantity_and_price.store("quantity", quantity)
  
+  current_total = price * quantity
+  
+  total += current_total
+  quantity_and_price.store("current_total", current_total)
   user_cart.store(item, quantity_and_price)
   puts "#{user_cart}"
+  puts "В корзине товаров на сумму: #{total}"
 end
