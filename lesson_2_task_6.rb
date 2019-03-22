@@ -6,9 +6,10 @@
   # содержащий цену за единицу товара и кол-во купленного товара. Также вывести итоговую сумму за каждый товар.
   # Вычислить и вывести на экран итоговую сумму всех покупок в "корзине".
 
+user_cart = {}
+quantity_and_price = {}
+
 loop do
-  user_cart = Hash[]
-  quantity_and_price = Hash[]
 
   puts "Введите название товара:"
   item = gets.chomp
@@ -19,9 +20,7 @@ loop do
 
   puts "Введите количество купленного товара:"
   quantity_and_price.store("quantity", gets.chomp.to_i)
-
-  user_сart = { item => quantity_and_price }
-
-  puts user_сart
-
+ 
+  user_cart.store(item, quantity_and_price)
+  puts "#{user_cart}"
 end
