@@ -12,11 +12,11 @@ loop do
   break if item == "стоп"
 
   puts "Введите цену товара за единицу:"
-  price = gets.chomp.to_f
+  price = gets.to_f
   quantity_and_price.store("price", price)
 
   puts "Введите количество товара:"
-  quantity = gets.chomp.to_i
+  quantity = gets.to_i
   quantity_and_price.store("quantity", quantity)
  
   current_total = price * quantity
@@ -24,6 +24,6 @@ loop do
   total += current_total
   quantity_and_price.store("current_total", current_total)
   user_cart.store(item, quantity_and_price)
-  puts "#{user_cart}"
-  puts "В корзине товаров на сумму: #{total}"
 end
+puts "#{user_cart}"
+puts "В корзине товаров на сумму: #{total}"
