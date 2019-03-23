@@ -8,6 +8,4 @@ vowels = ["а", "о", "э", "ы", "у", "я", "е", "ю", "и"]
 # Оставляю метод zip
 abc = Hash[("а".."я").to_a.zip((1..32).to_a)]
 
-vowels.each do |letter|
-  puts abc.select {|k,v| k == letter}
-end
+vowels.each { |letter| puts abc.select {|k,v| k == letter} }
