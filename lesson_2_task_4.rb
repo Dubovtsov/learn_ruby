@@ -2,18 +2,10 @@
 # Вывод гласных с их порядковым номером в алфавите #
 ####################################################
 
-consonants = ["б", "в", "г", "д", 
-              "ж", "з", "й", "к", 
-              "л", "м", "н", "п", 
-              "р", "с", "т", "ф", 
-              "х", "ц", "ч", "ш",
-               "щ", "ь", "ъ"]
+vowels = ["а", "о", "э", "ы", "у", "я", "е", "ю", "и"]
 
 abc = Hash[("а".."я").to_a.zip((1..32).to_a)]
 
-consonants.each do |letter|
-  if abc.include?(letter)
-    abc.delete(letter)
-  end
+vowels.each do |letter|
+  puts abc.select {|k,v| k == letter}
 end
-puts abc
