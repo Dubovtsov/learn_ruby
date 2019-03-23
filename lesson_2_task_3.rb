@@ -3,16 +3,17 @@
 ################################
 
 def fibonacci(n)
-  fib_1 = 0
-  fib_2 = 1
+  fib = [0, 1]
+  fib_1 = fib[0]
+  fib_2 = fib[1]
   
   loop do
     fib_2 += fib_1
     fib_1 = fib_2 - fib_1
     break if fib_2 > n
-    puts fib_2
+    fib << fib_2
   end
+  puts fib
 end
 
-puts "Введите число:"
-fibonacci(gets.chomp.to_i)
+fibonacci(100)
