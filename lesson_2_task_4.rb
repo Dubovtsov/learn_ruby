@@ -4,6 +4,8 @@
 
 vowels = ["а", "о", "э", "ы", "у", "я", "е", "ю", "и"]
 
+# Я не знаю как сделать через метод each_with_index
+# Оставляю метод zip
 abc = Hash[("а".."я").to_a.zip((1..32).to_a)]
 
 vowels.each do |letter|
