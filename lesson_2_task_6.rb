@@ -13,17 +13,17 @@ loop do
 
   puts "Введите цену товара за единицу:"
   price = gets.to_f
-  quantity_and_price.store("price", price)
+  quantity_and_price["price"] = price
 
   puts "Введите количество товара:"
   quantity = gets.to_i
-  quantity_and_price.store("quantity", quantity)
+  quantity_and_price["quantity"] = quantity
  
   current_total = price * quantity
   
   total += current_total
-  quantity_and_price.store("current_total", current_total)
-  user_cart.store(item, quantity_and_price)
+  quantity_and_price["current_total"] = current_total
+  user_cart[item] = quantity_and_price
 end
 puts "#{user_cart}"
 puts "В корзине товаров на сумму: #{total}"
