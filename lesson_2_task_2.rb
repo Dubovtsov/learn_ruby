@@ -1,3 +1,1 @@
-(10..100).step(5) do |n|
-  puts n
-end
+(10..100).step(5){ |n|  puts n }
