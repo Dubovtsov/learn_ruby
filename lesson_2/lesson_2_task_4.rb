@@ -4,8 +4,8 @@
 
 vowels = ["а", "о", "э", "ы", "у", "я", "е", "ю", "и"]
 
-# Я не знаю как сделать через метод each_with_index
-# Оставляю метод zip
-abc = Hash[("а".."я").to_a.zip((1..32).to_a)]
-
-vowels.each { |letter| puts abc.select {|k,v| k == letter} }
+abc = {}
+("а".."я").to_a.each_with_index do |value, index|
+  vowels.each { |letter| abc[letter] = index if value == letter }
+end
+puts abc
