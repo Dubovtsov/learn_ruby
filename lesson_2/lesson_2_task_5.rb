@@ -12,15 +12,13 @@ def month_days(month, year, day)
     
   # проверка является ли год високосным
   hash_mdays[2] = 29 if year % 400 == 0 || year % 4 == 0
-  number_of_days_per_year = hash_mdays.values.take(month - 1).sum + day
-  puts number_of_days_per_year
+  days = hash_mdays.values.take(month - 1).sum + day
 end
 
 loop do
   puts "Введите произвольную дату в формате 00.00.0000:"
   date = gets.chomp.split(".")
   date = date.map{ |e| e.to_i}
-  
   user_day = date[0]
   user_month = date[1]
   user_year = date[2]
@@ -34,9 +32,7 @@ loop do
   elsif user_year < 1000 || user_year > 2500
     puts "Год должен быть в интервале 1000..2500"
   else
-    month_days(user_month, user_year, user_day)
-    now = Time.now
-    puts now.yday
+    puts month_days(user_month, user_year, user_day)
     break
   end 
 end
