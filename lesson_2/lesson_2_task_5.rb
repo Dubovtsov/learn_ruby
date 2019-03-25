@@ -12,9 +12,7 @@ def month_days(month, year, day)
     
   # проверка является ли год високосным
   hash_mdays[2] = 29 if year % 400 == 0 || year % 4 == 0
-  # Кол-во дней в году
   number_of_days_per_year = hash_mdays.values.take(month - 1).sum + day
-  # number_of_the_day_in_the_month = hash_mdays[month] - day
   puts number_of_days_per_year
 end
 
