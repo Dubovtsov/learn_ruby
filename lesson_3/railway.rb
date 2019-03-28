@@ -1,10 +1,15 @@
 class Station
+  attr_reader :name, :trains
+  $stations = []
 
   def initialize(name)
     @trains = []
-    @stations = []
     @name = name
-    @stations << @name
+    $stations << @name
+  end
+
+  def Station.stations
+    puts $stations
   end
 
   # Прибытие поезда
@@ -36,12 +41,14 @@ end
 
 class Train
   attr_reader :number_of_cars, :speed, :type, :car_number, :current_station
+  $trains = {}
 
   def initialize(car_number, type, number_of_cars)
     @car_number = car_number
     @type = type
     @number_of_cars = number_of_cars
     @speed = 0
+    $trains[@car_number] = [@type, @number_of_cars]
     @current_station = 0
   end
 
@@ -71,7 +78,7 @@ class Train
     @route = route
     @current_station = @route.train_route.first
     @current_end_station = @route.train_route.last
-
+    puts @route
   end
 
   # def current_station
@@ -127,3 +134,21 @@ class Route
     puts train_route
   end
 end
+
+
+moscow = Station.new("Moscow")
+spb = Station.new("Spb")
+tver = Station.new("Tver")
+helsinki = Station.new("Helsinki")
+
+Station.stations
+
+train_808 = Train.new(808, "passenger", 12)
+train_909 = Train.new(909, "cargo", 18)
+train_1001 = Train.new(1001, "passenger", 12)
+
+puts $trains
+
+route_to_helsinki = Route.new(moscow.name, helsinki.name)
+route_to_helsinki.add_station(tver.name)
+route_to_helsinki.shedule
