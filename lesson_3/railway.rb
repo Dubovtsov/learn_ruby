@@ -35,7 +35,7 @@ end
 
 
 class Train
-  attr_reader :number_of_cars, :speed, :type, :car_number
+  attr_reader :number_of_cars, :speed, :type, :car_number, :current_station
 
   def initialize(car_number, type, number_of_cars)
     @car_number = car_number
@@ -74,9 +74,9 @@ class Train
 
   end
 
-  def current_station
-    puts @current_station
-  end
+  # def current_station
+  #   puts @current_station
+  # end
 
   def next_station
 
