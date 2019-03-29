@@ -8,10 +8,6 @@ class Station
     $stations << @name
   end
 
-  def Station.stations
-    puts $stations
-  end
-
   # Прибытие поезда
   def train_arrival(car_number)
     @trains << car_number
@@ -31,9 +27,5 @@ class Station
     else
       trains
     end
-  end
-
-  def trains
-    @trains
   end
 end
