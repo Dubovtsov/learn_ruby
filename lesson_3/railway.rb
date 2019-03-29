@@ -40,7 +40,7 @@ end
 
 
 class Train
-  attr_reader :number_of_cars, :speed, :type, :car_number, :current_station
+  attr_reader :number_of_cars, :speed, :type, :car_number, :current_station, :route
   $trains = {}
 
   def initialize(car_number, type, number_of_cars)
@@ -48,6 +48,7 @@ class Train
     @type = type
     @number_of_cars = number_of_cars
     @speed = 0
+    @route = []
     $trains[@car_number] = [@type, @number_of_cars]
     @current_station = 0
   end
@@ -74,11 +75,11 @@ class Train
     @number_of_cars -= 1 if @speed == 0 && @number_of_cars > 0
   end
 
-  def route(route)
-    @route = route
-    @current_station = @route.train_route.first
-    @current_end_station = @route.train_route.last
-    puts @route
+  def route(route_train)
+    
+    route_train.each { |station| @route << station }
+    @current_station = @route.first
+    # puts @current_station
   end
 
   # def current_station
@@ -135,20 +136,24 @@ class Route
   end
 end
 
+# Проверка работы классов
 
 moscow = Station.new("Moscow")
 spb = Station.new("Spb")
 tver = Station.new("Tver")
-helsinki = Station.new("Helsinki")
 
 Station.stations
 
+puts "Список поездов"
 train_808 = Train.new(808, "passenger", 12)
 train_909 = Train.new(909, "cargo", 18)
 train_1001 = Train.new(1001, "passenger", 12)
 
 puts $trains
 
-route_to_helsinki = Route.new(moscow.name, helsinki.name)
-route_to_helsinki.add_station(tver.name)
-route_to_helsinki.shedule
+route_to_spb = Route.new(moscow.name, spb.name)
+route_to_spb.add_station(tver.name)
+puts "Маршрут до Питера"
+route_to_spb.shedule
+
+train_808.route(route_to_spb.shedule)
