@@ -7,13 +7,13 @@ class Station
   end
 
   # Прибытие поезда
-  def train_arrival(train_number)
-    @trains << train_number
+  def train_arrival(train)
+    @trains << train
   end
 
   # Отправление поезда
-  def train_departure(train_number)
-    @trains.delete(train_number)
+  def train_departure(train)
+    @trains.delete(train)
   end
 
   def trains_type(type)

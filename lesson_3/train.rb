@@ -6,8 +6,6 @@ class Train
     @type = type
     @number_of_cars = number_of_cars
     @speed = 0
-    @route = nil
-    @current_station_index = nil
   end
 
   # Метод набора скорости
@@ -34,29 +32,39 @@ class Train
 
   def route(route)
     @route = route
-    @current_station_index = 0
-    @current_station_index = @route.train_route.first
+    @current_station = @route.train_route.first
+    @current_station_index = @route.train_route.index(@current_station)
   end
 
   def next_station
-    @route.train_route[@current_station_index + 1]
+    @route.train_route[@current_station_index + 1] if @route.train_route.size > @current_station_index + 1
   end
 
   def previous_station
-    @route.train_route[@current_station_index - 1]
+    @route.train_route[@current_station_index - 1] if @current_station_index > 0
   end
 
   def move_forward
-    @current_station_index = @route.train_route.index(@current_station_index) + 1 if @route.train_route.size > @current_station_index + 1
-    @current_station_index = @route.train_route[@current_station_index]
-    @current_station.train_arrival(self)
-    @previous_station.train_departure(self)
+    @current_station_index += 1 if @route.train_route.size > @current_station_index + 1
+    @current_station = @route.train_route[@current_station_index]
+    move_train
   end
 
   def move_backward
     @current_station_index = @route.train_route.index(@current_station_index) - 1 if @current_station_index > 0
-    @current_station_index = @route.train_route[@current_station_index]
-    @current_station.train_arrival(self)
-    @previous_station.train_departure(self)
+    @current_station = @route.train_route[@current_station_index]
+    move_train
   end
 end
+
+def move_train
+  @current_station.train_arrival(self)
+  @current_station = @route.stations[@current_station_index]
+  @previous_station.train_departure(self)
+end
+
+# def change_current_station
+#     @current_station.send_train(self) unless @current_station == nil
+#     @current_station = @route.stations[@current_station_index]
+#     @current_station.take_train(self) 
+#   end
