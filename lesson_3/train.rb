@@ -34,6 +34,8 @@ class Train
     @route = route
     @current_station = @route.train_route.first
     @current_station_index = @route.train_route.index(@current_station)
+    @current_station.train_arrival(self)
+    return @route
   end
 
   def next_station
@@ -46,25 +48,17 @@ class Train
 
   def move_forward
     @current_station_index += 1 if @route.train_route.size > @current_station_index + 1
-    @current_station = @route.train_route[@current_station_index]
     move_train
   end
 
   def move_backward
-    @current_station_index = @route.train_route.index(@current_station_index) - 1 if @current_station_index > 0
-    @current_station = @route.train_route[@current_station_index]
+    @current_station_index -= 1 if @current_station_index > 0
     move_train
   end
-end
 
-def move_train
-  @current_station.train_arrival(self)
-  @current_station = @route.stations[@current_station_index]
-  @previous_station.train_departure(self)
+  def move_train
+    @current_station.train_departure(self)
+    @current_station = @route.train_route[@current_station_index]
+    @current_station.train_arrival(self)
+  end
 end
-
-# def change_current_station
-#     @current_station.send_train(self) unless @current_station == nil
-#     @current_station = @route.stations[@current_station_index]
-#     @current_station.take_train(self) 
-#   end
