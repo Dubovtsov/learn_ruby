@@ -1,29 +1,31 @@
 class Station
   attr_reader :name, :trains
-  $stations = []
 
   def initialize(name)
     @trains = []
     @name = name
-    $stations << @name
   end
 
   # Прибытие поезда
-  def train_arrival(car_number)
-    @trains << car_number
+  def train_arrival(train_number)
+    @trains << train_number
   end
 
   # Отправление поезда
-  def train_departure(car_number)
-    @trains.delete(car_number)
+  def train_departure(train_number)
+    @trains.delete(train_number)
+  end
+
+  def trains_type(type)
+    @trains.select { |train| train.type == type }
   end
 
   # Получение списка поездов на станции с возможностью выбора типа поездов
   def get_trains(type = nil)
     if type == "passenger"
-      @trains.select { |train| train.type == type }
+      trains_type(type)
     elsif type == "cargo"
-      @trains.select { |train| train.type == type }
+      trains_type(type)
     else
       trains
     end

@@ -19,6 +19,6 @@ class Route
   end
 
   def shedule
-    puts train_route
+    train_route
   end
 end

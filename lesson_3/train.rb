@@ -1,15 +1,13 @@
 class Train
-  attr_reader :number_of_cars, :speed, :type, :car_number, :current_station, :route
-  $trains = {}
+  attr_reader :number_of_cars, :speed, :type, :train_number, :current_station, :route
 
-  def initialize(car_number, type, number_of_cars)
-    @car_number = car_number
+  def initialize(train_number, type, number_of_cars)
+    @train_number = train_number
     @type = type
     @number_of_cars = number_of_cars
     @speed = 0
-    @route = []
-    $trains[@car_number] = [@type, @number_of_cars]
-    @station_index = 0
+    @route = nil
+    @current_station_index = nil
   end
 
   # Метод набора скорости
@@ -36,26 +34,27 @@ class Train
 
   def route(route)
     @route = route
-    @station_index = 0
-    @current_station = @route.train_route.first
-    @arrival_station = @route.train_route.last
+    @current_station_index = 0
+    @current_station_index = @route.train_route.first
   end
 
   def next_station
-    @route.train_route[@station_index + 1]
+    @route.train_route[@current_station_index + 1]
   end
 
   def previous_station
-    @route.train_route[@station_index - 1]
+    @route.train_route[@current_station_index - 1]
   end
 
   def move_forward
-    @station_index = @route.train_route.index(@current_station) + 1 if @route.train_route.size > @station_index + 1
-    @current_station = @route.train_route[@station_index]
+    @current_station_index = @route.train_route.index(@current_station_index) + 1 if @route.train_route.size > @current_station_index + 1
+    @current_station_index = @route.train_route[@current_station_index]
+    @current_station_index.train_arrival(self)
+    # @current_station_index.train_departure(self)
   end
 
   def move_backward
-    @station_index = @route.train_route.index(@current_station) - 1 if @station_index > 0
-    @current_station = @route.train_route[@station_index]
+    @current_station_index = @route.train_route.index(@current_station_index) - 1 if @current_station_index > 0
+    @current_station_index = @route.train_route[@current_station_index]
   end
 end
