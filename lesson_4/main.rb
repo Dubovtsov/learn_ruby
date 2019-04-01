@@ -1,12 +1,18 @@
 require_relative 'route'
 require_relative 'train'
 require_relative 'station'
+require_relative 'car'
+require_relative 'cargo_car'
+require_relative 'cargo_train'
+require_relative 'passenger_car'
+require_relative 'passenger_train'
+require_relative 'seeds.rb'
 
-train = Train.new
+# train = Train.new
 
-route = Route.new
+# route = Route.new
 
-moscow = Station.new
+# moscow = Station.new
 
 
 # irb -r ./main.rb

@@ -1,9 +1,9 @@
 class Train
-  attr_reader :cars, :speed, :type, :train_number, :current_station, :route
+  attr_reader :speed, :type, :train_number, :current_station, :route
+  attr_accessor :cars
 
-  def initialize(train_number, type)
+  def initialize(train_number)
     @train_number = train_number
-    @type = type
     @cars = []
     @speed = 0
   end
@@ -16,15 +16,16 @@ class Train
   def speed_down(braking = 1)
     @speed -= braking
     @speed = 0 if @speed < 0
+    return @speed
   end
 
   # Зацепить вагон
-  def hook_car
+  def hook_car(car)
     @cars << car if @speed == 0
   end
 
   # Отцепить вагон
-  def unhook_car
+  def unhook_car(car)
     # Сначало поезд должен остановиться
     @cars.delete(car) if @speed == 0 && @cars.length > 0
   end
