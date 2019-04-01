@@ -30,8 +30,8 @@ class Train
     @number_of_cars -= 1 if @speed == 0 && @number_of_cars > 0
   end
 
-  def route(route)
-    @route = route
+  def set_route(new_route)
+    @route = new_route
     @current_station = @route.train_route.first
     @current_station_index = @route.train_route.index(@current_station)
     @current_station.train_arrival(self)
