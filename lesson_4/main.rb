@@ -1,18 +1,26 @@
-require_relative 'car'
-require_relative 'truck'
-require_relative 'sport_car'
+require_relative 'route'
+require_relative 'train'
+require_relative 'station'
 
-truck = Truck.new
-truck.start_engine
-puts "Truck RPM: #{truck.current_rpm}"
+train = Train.new
 
-car = Car.new
-car.start_engine
-puts "Car RPM: #{car.current_rpm}"
-sport_car = SportCar.new
-sport_car.start_engine
-puts "Sport car RPM: #{sport_car.current_rpm}"
+route = Route.new
+
+moscow = Station.new
 
 
 # irb -r ./main.rb
 # метод seed для загрузки данных
+
+
+# Разделить поезда на два типа PassengerTrain и CargoTrain, 
+# сделать родителя для классов, который будет содержать общие методы и свойства
+# Определить, какие методы могут быть помещены в private/protected 
+# и вынести их в такую секцию. В комментарии к методу обосновать, 
+# почему он был вынесен в private/protected
+# Вагоны теперь делятся на грузовые и пассажирские (отдельные классы). 
+# К пассажирскому поезду можно прицепить только пассажирские, к грузовому - грузовые. 
+# При добавлении вагона к поезду, объект вагона должен передаваться 
+# как аругмент метода и сохраняться во внутреннем массиве поезда, 
+# в отличие от предыдущего задания, где мы считали только кол-во вагонов. 
+# Параметр конструктора "кол-во вагонов" при этом можно удалить.
