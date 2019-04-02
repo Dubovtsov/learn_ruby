@@ -8,6 +8,46 @@ require_relative 'passenger_car'
 require_relative 'passenger_train'
 require_relative 'seeds.rb'
 
+loop do
+
+  puts "Что вы хотите сделать?:"
+  puts "Чтобы добавить новую ж/д станцию введите - create station"
+  puts "Чтобы добавить новый поезд введите - create train"
+  puts "Чтобы добавить новый маршрут введите - create route"
+  puts "Завершить выполнение программы - stop"
+  choise = gets.chomp
+    $trains = []
+    $stations = []
+  
+  case choise
+    when "stop"
+      break
+    when "stations"
+      puts "Всё хуйня, переделывай #{$stations}"
+    when "create station"
+      puts "Введите название станции:"
+      name_station = gets.chomp
+      $stations << Station.new(name_station)
+      puts "Добавлена новая станция: #{name_station}"
+    when "create train"
+      puts "Введите номер поезда:"
+      train_number = gets.to_i
+      $trains << Train.new(train_number)
+      puts "Добавлен новый поезд: #{train.train_number}"
+    when "create route"
+      puts "Введите начальную станцию:"
+      start_station = gets.chomp
+      # station1 = Station.new(start_station)
+      puts "Введите конечную станцию:"
+      end_station = gets.chomp
+      # station2 = Station.new(end_station)
+      route = Route.new(start_station, end_station)
+
+      puts "Добавлен маршрут от #{start_station} до #{end_station}"
+    else
+      puts "Error!"
+  end
+end
 # train = Train.new
 
 # route = Route.new
