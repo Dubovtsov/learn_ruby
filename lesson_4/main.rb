@@ -8,32 +8,47 @@ require_relative 'passenger_car'
 require_relative 'passenger_train'
 require_relative 'seeds.rb'
 
+@trains = []
+@stations = []
+@routes = []
+
+puts "------------------------------------------------------"
+puts "Что вы хотите сделать?"
+puts "Чтобы добавить новую ж/д станцию введите - create station"
+puts "Чтобы добавить новый поезд введите - create train"
+puts "Чтобы добавить новый маршрут введите - create route"
+puts "Завершить выполнение программы - stop"
+puts "------------------------------------------------------"
+
 loop do
 
-  puts "Что вы хотите сделать?:"
-  puts "Чтобы добавить новую ж/д станцию введите - create station"
-  puts "Чтобы добавить новый поезд введите - create train"
-  puts "Чтобы добавить новый маршрут введите - create route"
-  puts "Завершить выполнение программы - stop"
   choise = gets.chomp
-    $trains = []
-    $stations = []
-  
+   
   case choise
     when "stop"
       break
     when "stations"
-      puts "Всё хуйня, переделывай #{$stations}"
+      @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+    when "trains"
+      @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
     when "create station"
       puts "Введите название станции:"
       name_station = gets.chomp
-      $stations << Station.new(name_station)
+      @stations << Station.new(name_station)
       puts "Добавлена новая станция: #{name_station}"
     when "create train"
       puts "Введите номер поезда:"
       train_number = gets.to_i
-      $trains << Train.new(train_number)
-      puts "Добавлен новый поезд: #{train.train_number}"
+      puts "Поезд пассажирский или грузовой?"
+      type = gets.chomp
+      if type == "грузовой"
+        @trains << CargoTrain.new(train_number)
+        puts "Добавлен новый поезд: #{train_number}"
+      else
+        @trains << PassengerTrain.new(train_number)
+        puts "Добавлен новый поезд: #{train_number}"
+      end
+      
     when "create route"
       puts "Введите начальную станцию:"
       start_station = gets.chomp
@@ -41,7 +56,7 @@ loop do
       puts "Введите конечную станцию:"
       end_station = gets.chomp
       # station2 = Station.new(end_station)
-      route = Route.new(start_station, end_station)
+      @routes << Route.new(start_station, end_station)
 
       puts "Добавлен маршрут от #{start_station} до #{end_station}"
     else
