@@ -1,11 +1,10 @@
 class Train
-  attr_reader :speed, :type, :train_number, :current_station, :route
-  attr_accessor :cars
+  attr_reader :speed, :type, :train_number, :current_station, :route, :cars
 
   def initialize(train_number)
     @train_number = train_number
-    @cars = []
     @speed = 0
+    @cars = []
   end
 
   # Метод набора скорости
@@ -20,14 +19,14 @@ class Train
   end
 
   # Зацепить вагон
-  def hook_car(car)
-    @cars << car if @speed == 0
+  def hook_car(new_car)
+    @cars << new_car if @speed == 0
   end
 
   # Отцепить вагон
-  def unhook_car(car)
+  def unhook_car(new_car)
     # Сначало поезд должен остановиться
-    @cars.delete(car) if @speed == 0 && @cars.length > 0
+    @cars.delete(new_car) if @speed == 0 && @cars.length > 0
   end
 
   def set_route(new_route)

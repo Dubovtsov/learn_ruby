@@ -4,5 +4,6 @@ class CargoTrain < Train
     @train_number = train_number
     @type = "Грузовой"
     @speed = 0
+    @cars = []
   end
 end
