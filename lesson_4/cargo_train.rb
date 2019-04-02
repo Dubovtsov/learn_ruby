@@ -6,4 +6,9 @@ class CargoTrain < Train
     @speed = 0
     @cars = []
   end
+
+  def hook(car)
+    hook_car(car) if car.is_a? CargoCar  	
+  end
+
 end
