@@ -12,17 +12,32 @@ require_relative 'seeds.rb'
 @stations = []
 @routes = []
 
-puts "-----------------------------------------------------------"
+def separator 
+  puts "-------------------------------------------------------------"
+end
+
+menu = { 1: "Добавить новую ж/д станцию введите", 
+         2: "Чтобы добавить новый поезд введите",
+         3: "Чтобы добавить новый маршрут введите",
+         4:
+         5:
+         6:
+         7:
+         8:
+         9: }
+separator
 puts "Что вы хотите сделать?"
-puts "-----------------------------------------------------------"
-puts "Чтобы добавить новую ж/д станцию введите -   create station"
-puts "Чтобы добавить новый поезд введите -         create train"
-puts "Чтобы добавить новый маршрут введите -       create route"
-puts "Чтобы добавить остановку в маршрут введите - add stop"
-puts "Список станций -                             stations"
-puts "Список поездов -                             trains"
-puts "Завершить выполнение программы -             stop"
-puts "-----------------------------------------------------------"
+separator
+puts "Чтобы добавить новую ж/д станцию введите -   1"
+puts "Чтобы добавить новый поезд введите -         2"
+puts "Чтобы добавить новый маршрут введите -       3"
+puts "Чтобы добавить остановку в маршрут введите - 4"
+puts "Список станций -                             5"
+puts "Список поездов -                             6"
+puts "Список поездов на станции -                  7"
+puts "Добавить маршрут поезду -                    8"
+puts "Завершить выполнение программы -             10"
+separator
 
 loop do
 
@@ -40,16 +55,21 @@ loop do
   case choise
     when "stop"
       break
+
     when "stations"
       @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+    
     when "trains"
       @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
+    
     when "routes"
       @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.shedule}" }
+    
     when "create s"
       puts "Введите название станции:"
       name_station = gets.chomp
       station_include(name_station)
+    
     when "create train"
       puts "Введите номер поезда:"
       train_number = gets.to_i
@@ -62,23 +82,31 @@ loop do
         @trains << PassengerTrain.new(train_number)
         puts "Добавлен новый пассажирский поезд: #{train_number}"
       end
+    
     when "create route"
       puts "Введите начальную станцию:"
       start_station = gets.chomp
       station_include(start_station)
-      
       puts "Введите конечную станцию:"
       end_station = gets.chomp
       station_include(end_station)
       @routes << Route.new(start_station, end_station)
       puts "Добавлен маршрут от #{start_station} до #{end_station}"
+      separator
+      puts "Хотите добавить остановки в маршрут?"
+      puts "Чтобы добавить введите - add stop"
+      puts "Список доступных маршрутов:"
+      @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.shedule}" }
+      separator
 
-    # when "add stop"
-    #   puts "Введите название остановки:"
-    #   stop = gets.chomp
-    #   @stops << stop unless @stops.include? stop
-        
-    #   add_station()
+    when "add stop"
+      puts "Введите номер маршрута из списка:"
+      get_route = gets.to_i
+      puts "Введите название остановки:"
+      stop = gets.chomp
+      station_include(stop)
+      route = @routes[get_route - 1]
+      route.add_station(stop)
     else
       puts "Error!"
   end
