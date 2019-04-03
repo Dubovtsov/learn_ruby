@@ -16,27 +16,20 @@ def separator
   puts "-------------------------------------------------------------"
 end
 
-menu = { 1: "Добавить новую ж/д станцию введите", 
-         2: "Чтобы добавить новый поезд введите",
-         3: "Чтобы добавить новый маршрут введите",
-         4:
-         5:
-         6:
-         7:
-         8:
-         9: }
+menu = { 1 => "Добавить новую ж/д станцию", 
+         2 => "Добавить новый поезд",
+         3 => "Добавить новый маршрут",
+         4 => "Добавить остановку в маршрут",
+         5 => "Список станций",
+         6 => "Список поездов",
+         7 => "Список маршрутов",
+         8 => "Список поездов на станции",
+         9 => "Передать маршрут поезду",
+         10 => "Завершить выполнение программы" }
 separator
-puts "Что вы хотите сделать?"
+puts "Что вы хотите сделать? Введите цифру для выполнения операции"
 separator
-puts "Чтобы добавить новую ж/д станцию введите -   1"
-puts "Чтобы добавить новый поезд введите -         2"
-puts "Чтобы добавить новый маршрут введите -       3"
-puts "Чтобы добавить остановку в маршрут введите - 4"
-puts "Список станций -                             5"
-puts "Список поездов -                             6"
-puts "Список поездов на станции -                  7"
-puts "Добавить маршрут поезду -                    8"
-puts "Завершить выполнение программы -             10"
+menu.each { |key, value| puts "#{key} => #{value}" }
 separator
 
 loop do
@@ -52,25 +45,25 @@ loop do
     end
   end
 
-  case choise
-    when "stop"
-      break
+  def show_routes
+    @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.shedule}" }
+  end
 
-    when "stations"
-      @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
-    
-    when "trains"
-      @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
-    
-    when "routes"
-      @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.shedule}" }
-    
-    when "create s"
+  def show_trains
+    @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
+  end
+
+  def show_stations
+    @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+  end
+
+  case choise
+    when "1"
       puts "Введите название станции:"
       name_station = gets.chomp
       station_include(name_station)
     
-    when "create train"
+    when "2"
       puts "Введите номер поезда:"
       train_number = gets.to_i
       puts "Поезд пассажирский или грузовой?"
@@ -83,7 +76,7 @@ loop do
         puts "Добавлен новый пассажирский поезд: #{train_number}"
       end
     
-    when "create route"
+    when "3"
       puts "Введите начальную станцию:"
       start_station = gets.chomp
       station_include(start_station)
@@ -99,7 +92,7 @@ loop do
       @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.shedule}" }
       separator
 
-    when "add stop"
+    when "4"
       puts "Введите номер маршрута из списка:"
       get_route = gets.to_i
       puts "Введите название остановки:"
@@ -107,6 +100,37 @@ loop do
       station_include(stop)
       route = @routes[get_route - 1]
       route.add_station(stop)
+    
+    when "5"
+      show_stations    
+    when "6"
+      show_trains    
+    when "7"
+      show_routes    
+    when "8"
+      if @stations.empty?
+        puts "Сначало добавьте станции"
+      else
+        puts "Выберите станцию"
+        show_stations
+        index_station = gets.to_i
+        station = @stations[index_station -1]
+        puts station
+        station.get_trains
+      end
+    when "9"
+      puts "Выберите поезд"
+      show_trains
+      index_train = gets.to_i
+      train = @trains[index_train -1]
+      puts "Выберите маршрут"
+      show_routes
+      index_route = gets.to_i
+      route = @routes[index_route - 1]
+      train.set_route(route)
+    when "10"
+      break
+
     else
       puts "Error!"
   end
