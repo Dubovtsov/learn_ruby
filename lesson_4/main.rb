@@ -27,7 +27,16 @@ puts "-----------------------------------------------------------"
 loop do
 
   choise = gets.chomp
-   
+
+  def station_include(name_station)
+    if @stations.any? { |station, index| station.name == name_station }
+      puts "Станция уже есть в списке"
+    else
+      @stations << Station.new(name_station)
+      puts "Добавлена новая станция: #{name_station}"
+    end
+  end
+
   case choise
     when "stop"
       break
@@ -35,11 +44,12 @@ loop do
       @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
     when "trains"
       @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
-    when "create station"
+    when "routes"
+      @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.shedule}" }
+    when "create s"
       puts "Введите название станции:"
       name_station = gets.chomp
-      @stations << Station.new(name_station)
-      puts "Добавлена новая станция: #{name_station}"
+      station_include(name_station)
     when "create train"
       puts "Введите номер поезда:"
       train_number = gets.to_i
@@ -55,11 +65,11 @@ loop do
     when "create route"
       puts "Введите начальную станцию:"
       start_station = gets.chomp
-      @stations << Station.new(start_station) unless @stations.include? start_station
-
+      station_include(start_station)
+      
       puts "Введите конечную станцию:"
       end_station = gets.chomp
-      @stations << Station.new(end_station) unless @stations.include? end_station
+      station_include(end_station)
       @routes << Route.new(start_station, end_station)
       puts "Добавлен маршрут от #{start_station} до #{end_station}"
 
