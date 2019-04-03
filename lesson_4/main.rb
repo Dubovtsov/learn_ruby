@@ -38,9 +38,11 @@ loop do
 
   def station_include(name_station)
     if @stations.any? { |station, index| station.name == name_station }
-      puts "Станция уже есть в списке"
+      return @stations.select{ |station| station.name == name_station }
     else
       @stations << Station.new(name_station)
+      return @stations.select{ |station| station.name == name_station }
+      puts @stations
       puts "Добавлена новая станция: #{name_station}"
     end
   end
@@ -79,13 +81,13 @@ loop do
     when "3"
       puts "Введите начальную станцию:"
       start_station = gets.chomp
-      station_include(start_station)
+
       puts "Введите конечную станцию:"
       end_station = gets.chomp
-      station_include(end_station)
-      @routes << Route.new(start_station, end_station)
+      @routes << Route.new(station_include(start_station), station_include(end_station))
       puts "Добавлен маршрут от #{start_station} до #{end_station}"
       separator
+
       puts "Хотите добавить остановки в маршрут?"
       puts "Чтобы добавить введите - add stop"
       puts "Список доступных маршрутов:"
@@ -102,7 +104,9 @@ loop do
       route.add_station(stop)
     
     when "5"
-      show_stations    
+      puts "#{@stations.flatten}"
+      # show_stations
+  
     when "6"
       show_trains    
     when "7"
@@ -115,8 +119,7 @@ loop do
         show_stations
         index_station = gets.to_i
         station = @stations[index_station -1]
-        puts station
-        station.get_trains
+        puts station.get_trains
       end
     when "9"
       puts "Выберите поезд"

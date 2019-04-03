@@ -34,7 +34,7 @@ class Train
     @current_station = @route.train_route.first
     @current_station_index = @route.train_route.index(@current_station)
     @current_station.train_arrival(self)
-    return @route
+    # return @route
   end
 
   def next_station

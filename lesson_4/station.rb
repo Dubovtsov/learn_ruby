@@ -27,7 +27,7 @@ class Station
     elsif type == "cargo"
       trains_type(type)
     else
-      trains
+      @trains
     end
   end
 end
