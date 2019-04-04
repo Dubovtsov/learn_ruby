@@ -17,9 +17,12 @@ class Route
   def train_route
     # Метод .flatten преобразует многомерный массив в одномерный
     [@start_station, @stops, @end_station].flatten
+    
   end
 
-  def shedule
-    train_route
-  end
+  # def shedule
+  #   train_route.each_with_index{ |station, index| puts "#{index + 1} - #{station.name}" }
+    
+  #   "#{@start_station.name} - #{@end_station.name}, всего #{train_route.size} станций"
+  # end
 end

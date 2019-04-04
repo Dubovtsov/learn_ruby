@@ -42,13 +42,11 @@ loop do
     else
       @stations << Station.new(name_station)
       return @stations.select{ |station| station.name == name_station }
-      puts @stations
-      puts "Добавлена новая станция: #{name_station}"
     end
   end
 
   def show_routes
-    @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.shedule}" }
+    @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.train_route}" }
   end
 
   def show_trains
@@ -60,11 +58,15 @@ loop do
   end
 
   case choise
+    when "menu"
+      menu.each { |key, value| puts "#{key} => #{value}" }
+      separator
     when "1"
       puts "Введите название станции:"
       name_station = gets.chomp
       station_include(name_station)
-    
+      puts "Добавлена новая станция: #{name_station}"
+      separator
     when "2"
       puts "Введите номер поезда:"
       train_number = gets.to_i
@@ -75,9 +77,9 @@ loop do
         puts "Добавлен новый грузовой поезд: #{train_number}"
       else
         @trains << PassengerTrain.new(train_number)
-        puts "Добавлен новый пассажирский поезд: #{train_number}"
+        puts "Добавлен новый пассажирский поезд номер: #{train_number}"
       end
-    
+      separator
     when "3"
       puts "Введите начальную станцию:"
       start_station = gets.chomp
@@ -89,9 +91,9 @@ loop do
       separator
 
       puts "Хотите добавить остановки в маршрут?"
-      puts "Чтобы добавить введите - add stop"
+      puts "Чтобы добавить введите - 4"
       puts "Список доступных маршрутов:"
-      @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.shedule}" }
+      @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.train_route}" }
       separator
 
     when "4"
@@ -99,9 +101,10 @@ loop do
       get_route = gets.to_i
       puts "Введите название остановки:"
       stop = gets.chomp
-      station_include(stop)
       route = @routes[get_route - 1]
-      route.add_station(stop)
+      route.add_station(station_include(stop))
+      puts "#{route.train_route}"
+      separator
     
     when "5"
       puts "#{@stations.flatten}"
