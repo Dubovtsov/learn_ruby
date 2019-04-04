@@ -3,8 +3,8 @@ class PassengerTrain < Train
   def initialize(train_number)
     super train_number
     @type = "Пассажирский"
-    @speed = 0
-    @cars = []
+    # @speed = 0
+    # @cars = []
   end
 
   def hook(car)

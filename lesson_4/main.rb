@@ -25,7 +25,11 @@ menu = { 1 => "Добавить новую ж/д станцию",
          7 => "Список маршрутов",
          8 => "Список поездов на станции",
          9 => "Передать маршрут поезду",
-         10 => "Завершить выполнение программы" }
+         10 => "Добавить вагон",
+         11 => "Отцепить вагон",
+         12 => "Переместить поезд вперед по маршруту",
+         13 => "Переместить поезд назад по маршруту",
+         14 => "Завершить выполнение программы" }
 separator
 puts "Что вы хотите сделать? Введите цифру для выполнения операции"
 separator
@@ -61,12 +65,14 @@ loop do
     when "menu"
       menu.each { |key, value| puts "#{key} => #{value}" }
       separator
+    
     when "1"
       puts "Введите название станции:"
       name_station = gets.chomp
       station_include(name_station)
       puts "Добавлена новая станция: #{name_station}"
       separator
+    
     when "2"
       puts "Введите номер поезда:"
       train_number = gets.to_i
@@ -80,16 +86,15 @@ loop do
         puts "Добавлен новый пассажирский поезд номер: #{train_number}"
       end
       separator
+    
     when "3"
       puts "Введите начальную станцию:"
       start_station = gets.chomp
-
       puts "Введите конечную станцию:"
       end_station = gets.chomp
       @routes << Route.new(station_include(start_station), station_include(end_station))
       puts "Добавлен маршрут от #{start_station} до #{end_station}"
       separator
-
       puts "Хотите добавить остановки в маршрут?"
       puts "Чтобы добавить введите - 4"
       puts "Список доступных маршрутов:"
@@ -107,13 +112,15 @@ loop do
       separator
     
     when "5"
-      puts "#{@stations.flatten}"
-      # show_stations
-  
+      # puts "#{@stations.flatten}"
+      show_stations
     when "6"
       show_trains    
+      puts "#{@trains}"
+      
     when "7"
       show_routes    
+      
     when "8"
       if @stations.empty?
         puts "Сначало добавьте станции"
@@ -124,6 +131,7 @@ loop do
         station = @stations[index_station -1]
         station.get_trains
       end
+
     when "9"
       puts "Выберите поезд"
       show_trains
@@ -134,7 +142,18 @@ loop do
       index_route = gets.to_i
       route = @routes[index_route - 1]
       train.set_route(route)
+    
     when "10"
+      puts "Выберите поезд"
+      show_trains
+      index_train = gets.to_i
+      train = @trains[index_train -1]
+      puts "#{train.type}"
+      train.hook_car(train.type)
+      puts "Поезд состоит из #{train.cars.size} вагонов"
+      separator
+      
+    when "14"
       break
 
     else
@@ -146,3 +165,6 @@ end
 # и вынести их в такую секцию. В комментарии к методу обосновать, 
 # почему он был вынесен в private/protected
 # К пассажирскому поезду можно прицепить только пассажирские, к грузовому - грузовые.
+# Добавлять вагоны к поезду
+#      - Отцеплять вагоны от поезда
+#      - Перемещать поезд по маршруту вперед и назад

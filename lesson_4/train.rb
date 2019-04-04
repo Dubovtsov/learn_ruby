@@ -29,6 +29,10 @@ class Train
     @cars.delete(new_car) if @speed == 0 && @cars.length > 0
   end
 
+  def show_cars
+    puts "#{@cars.size}"
+  end
+
   def set_route(new_route)
     @route = new_route
     @current_station = @route.train_route.first
