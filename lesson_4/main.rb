@@ -119,7 +119,7 @@ loop do
         show_stations
         index_station = gets.to_i
         station = @stations[index_station -1]
-        puts station.get_trains
+        station.get_trains
       end
     when "9"
       puts "Выберите поезд"
