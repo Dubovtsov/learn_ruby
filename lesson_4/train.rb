@@ -24,9 +24,9 @@ class Train
   end
 
   # Отцепить вагон
-  def unhook_car(new_car)
+  def unhook_car
     # Сначало поезд должен остановиться
-    @cars.delete(new_car) if @speed == 0 && @cars.length > 0
+    @cars.pop if @speed == 0 && @cars.length > 0
   end
 
   def show_cars

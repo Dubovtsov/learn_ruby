@@ -7,8 +7,8 @@ class CargoTrain < Train
     # @cars = []
   end
   
-  def hook(car)
-    hook_car(car) if car.is_a? CargoCar  	
-  end
+  # def hook(car)
+  #   hook_car(car) if car.is_a? CargoCar  	
+  # end
 
 end

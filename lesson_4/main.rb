@@ -25,11 +25,10 @@ menu = { 1 => "Добавить новую ж/д станцию",
          7 => "Список маршрутов",
          8 => "Список поездов на станции",
          9 => "Передать маршрут поезду",
-         10 => "Добавить вагон",
-         11 => "Отцепить вагон",
-         12 => "Переместить поезд вперед по маршруту",
-         13 => "Переместить поезд назад по маршруту",
-         14 => "Завершить выполнение программы" }
+         10 => "Добавить/Отцепить вагон",
+         11 => "Переместить поезд по маршруту",
+         12 => "Завершить выполнение программы"
+        }
 separator
 puts "Что вы хотите сделать? Введите цифру для выполнения операции"
 separator
@@ -142,18 +141,49 @@ loop do
       index_route = gets.to_i
       route = @routes[index_route - 1]
       train.set_route(route)
-    
+      separator
+
     when "10"
-      puts "Выберите поезд"
+      puts "Выберите поезд из списка:"
       show_trains
       index_train = gets.to_i
       train = @trains[index_train -1]
       puts "#{train.type}"
-      train.hook_car(train.type)
-      puts "Поезд состоит из #{train.cars.size} вагонов"
+      puts "Введите 1 => Прицепить вагон"
+      puts "Введите 2 => Отцепить вагон"
+      input = gets.to_i
+      if input == 1
+        train.hook_car(train.type)
+        puts "Поезд состоит из #{train.cars.size} вагонов"
+      elsif input == 2
+        train.unhook_car
+        puts "Поезд состоит из #{train.cars.size} вагонов"
+      else
+        puts "Введено неверное значение!"
+      end
       separator
       
-    when "14"
+    when "11"
+      puts "Выберите поезд из списка:"
+      show_trains
+      index_train = gets.to_i
+      train = @trains[index_train -1]
+      puts "#{train.type}"
+      puts "Введите 1 => Отправить поезд вперед"
+      puts "Введите 2 => Отправить поезд назад"
+      input = gets.to_i
+      if input == 1
+        train.move_forward
+     
+      elsif input == 2
+        train.move_backward
+        
+      else
+        puts "Введено неверное значение!"
+      end
+      separator
+
+    when "12"
       break
 
     else
