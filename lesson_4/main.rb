@@ -48,8 +48,17 @@ loop do
     end
   end
 
+  def show_route(route)
+    route.train_route.each_with_index { |station, station_index| print " -> " if station_index > 0; print station.name }
+    print "\n"
+  end
+
   def show_routes
-    @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.train_route}" }
+    @routes.each_with_index do |route, index|
+      print "#{index + 1} - "
+      show_route(route)
+    end
+    # @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.start_station} => #{route.end_station}" }
   end
 
   def show_trains
@@ -79,7 +88,7 @@ loop do
       type = gets.chomp
       if type == "грузовой"
         @trains << CargoTrain.new(train_number)
-        puts "Добавлен новый грузовой поезд: #{train_number}"
+        puts "Добавлен новый грузовой поезд номер: #{train_number}"
       else
         @trains << PassengerTrain.new(train_number)
         puts "Добавлен новый пассажирский поезд номер: #{train_number}"
@@ -96,30 +105,31 @@ loop do
       separator
       puts "Хотите добавить остановки в маршрут?"
       puts "Чтобы добавить введите - 4"
-      puts "Список доступных маршрутов:"
-      @routes.each_with_index { |route, index| puts "#{index + 1} - #{route.train_route}" }
       separator
 
     when "4"
       puts "Введите номер маршрута из списка:"
+      show_routes
       get_route = gets.to_i
       puts "Введите название остановки:"
       stop = gets.chomp
       route = @routes[get_route - 1]
       route.add_station(station_include(stop))
-      puts "#{route.train_route}"
+      show_route(route)
       separator
     
     when "5"
-      # puts "#{@stations.flatten}"
+      puts "Список всех станций"
       show_stations
+      separator
     when "6"
-      show_trains    
-      puts "#{@trains}"
-      
+      puts "Список всех поездов"
+      show_trains
+      separator
     when "7"
-      show_routes    
-      
+      puts "Список доступных маршрутов"
+      show_routes
+
     when "8"
       if @stations.empty?
         puts "Сначало добавьте станции"
@@ -128,8 +138,11 @@ loop do
         show_stations
         index_station = gets.to_i
         station = @stations[index_station -1]
+        puts "Список поездов на станции:"
+        puts "Нет поездов на станции" if station.get_trains.empty?
         station.get_trains
       end
+      separator
 
     when "9"
       puts "Выберите поезд"
@@ -141,6 +154,7 @@ loop do
       index_route = gets.to_i
       route = @routes[index_route - 1]
       train.set_route(route)
+      puts "Поезд прибыл на станцию - #{train.current_station.name}"
       separator
 
     when "10"
@@ -154,10 +168,10 @@ loop do
       input = gets.to_i
       if input == 1
         train.hook_car(train.type)
-        puts "Поезд состоит из #{train.cars.size} вагонов"
+        puts "Поезд состоит из #{train.cars.size} вагона(ов)"
       elsif input == 2
         train.unhook_car
-        puts "Поезд состоит из #{train.cars.size} вагонов"
+        puts "Поезд состоит из #{train.cars.size} вагона(ов)"
       else
         puts "Введено неверное значение!"
       end
@@ -168,16 +182,15 @@ loop do
       show_trains
       index_train = gets.to_i
       train = @trains[index_train -1]
-      puts "#{train.type}"
       puts "Введите 1 => Отправить поезд вперед"
       puts "Введите 2 => Отправить поезд назад"
       input = gets.to_i
       if input == 1
         train.move_forward
-     
+        puts "Поезд прибыл на станцию - #{train.current_station.name}"
       elsif input == 2
         train.move_backward
-        
+        puts "Поезд прибыл на станцию - #{train.current_station.name}"
       else
         puts "Введено неверное значение!"
       end
