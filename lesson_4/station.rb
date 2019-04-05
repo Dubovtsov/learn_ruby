@@ -30,4 +30,5 @@ class Station
       @trains.each_with_index{ |train, index| puts "#{index + 1} - поезд номер #{train.train_number} - #{train.type}" }
     end
   end
+  
 end
