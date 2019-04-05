@@ -61,6 +61,7 @@ class Train
 
   protected
 
+# Вызывается другими методами. Самостоятельно не используется 
   def move_train
     @current_station.train_departure(self)
     @current_station = @route.train_route[@current_station_index]
