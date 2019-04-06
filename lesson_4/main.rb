@@ -91,7 +91,7 @@ loop do
         station = @stations[index_station -1]
         puts "Список поездов на станции:"
         puts "Нет поездов на станции" if station.get_trains.empty?
-        station.get_trains
+        # station.get_trains
       end
       separator
 
@@ -113,7 +113,6 @@ loop do
       show_trains
       index_train = gets.to_i
       train = @trains[index_train -1]
-      # puts "#{train.type}"
       puts "Введите 1 => Прицепить вагон"
       puts "Введите 2 => Отцепить вагон"
       input = gets.to_i
