@@ -71,8 +71,6 @@ end
 def hook(train, input)
   if input == 1
     train.is_a?(CargoTrain) ? train.hook_car(CargoCar.new) : train.hook_car(PassengerCar.new)
-    # train.hook(CargoCar.new) if train.is_a? CargoTrain
-      # train.hook(PassengerCar.new) if train.is_a? PassengerTrain
     puts "Поезд состоит из #{train.cars.size} вагона(ов)"
   elsif input == 2
     train.unhook_car
