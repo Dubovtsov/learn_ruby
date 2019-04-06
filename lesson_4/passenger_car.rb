@@ -1,7 +1,7 @@
 class PassengerCar < Car
 
   def initialize
-    @type = "Пассажирский"
+    @type = :passenger
   end
 
 end

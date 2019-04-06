@@ -6,61 +6,16 @@ require_relative 'cargo_car'
 require_relative 'cargo_train'
 require_relative 'passenger_car'
 require_relative 'passenger_train'
+require_relative 'menu'
 
 @trains = []
 @stations = []
 @routes = []
 
-def separator 
-  puts "-------------------------------------------------------------"
-end
-
-def station_include(name_station)
-  if @stations.any? { |station, index| station.name == name_station }
-    return @stations.select{ |station| station.name == name_station }
-  else
-    @stations << Station.new(name_station)
-    return @stations.select{ |station| station.name == name_station }
-  end
-end
-
-def show_route(route)
-  route.train_route.each_with_index { |station, station_index| print " -> " if station_index > 0; print station.name }
-  print "\n"
-end
-
-def show_routes
-  @routes.each_with_index do |route, index|
-    print "#{index + 1} - "
-    show_route(route)
-  end
-end
-
-def show_trains
-  @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
-end
-
-def show_stations
-  @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
-end
-
-menu = { 1 => "Добавить новую ж/д станцию", 
-         2 => "Добавить новый поезд",
-         3 => "Добавить новый маршрут",
-         4 => "Добавить остановку в маршрут",
-         5 => "Список станций",
-         6 => "Список поездов",
-         7 => "Список маршрутов",
-         8 => "Список поездов на станции",
-         9 => "Передать маршрут поезду",
-         10 => "Добавить/Отцепить вагон",
-         11 => "Переместить поезд по маршруту",
-         12 => "Завершить выполнение программы"
-        }
 separator
 puts "Что вы хотите сделать? Введите цифру для выполнения операции"
 separator
-menu.each { |key, value| puts "#{key} => #{value}" }
+@menu.each { |key, value| puts "#{key} => #{value}" }
 separator
 
 loop do
@@ -69,7 +24,7 @@ loop do
 
   case choise
     when "menu"
-      menu.each { |key, value| puts "#{key} => #{value}" }
+      @menu.each { |key, value| puts "#{key} => #{value}" }
       separator
     
     when "1"
@@ -82,15 +37,11 @@ loop do
     when "2"
       puts "Введите номер поезда:"
       train_number = gets.to_i
-      puts "Поезд пассажирский или грузовой?"
-      type = gets.chomp
-      if type == "грузовой"
-        @trains << CargoTrain.new(train_number)
-        puts "Добавлен новый грузовой поезд номер: #{train_number}"
-      else
-        @trains << PassengerTrain.new(train_number)
-        puts "Добавлен новый пассажирский поезд номер: #{train_number}"
-      end
+      puts "Выберите тип поезда:"
+      puts "1 - Пассажирский"
+      puts "2 - Грузовой"
+      type = gets.to_i
+      add_train(train_number, type)
       separator
     
     when "3"
@@ -120,10 +71,12 @@ loop do
       puts "Список всех станций"
       show_stations
       separator
+
     when "6"
       puts "Список всех поездов"
       show_trains
       separator
+
     when "7"
       puts "Список доступных маршрутов"
       show_routes
@@ -143,7 +96,7 @@ loop do
       separator
 
     when "9"
-      puts "Выберите поезд"
+      puts "Выберите поезд из списка"
       show_trains
       index_train = gets.to_i
       train = @trains[index_train -1]
@@ -160,21 +113,13 @@ loop do
       show_trains
       index_train = gets.to_i
       train = @trains[index_train -1]
-      puts "#{train.type}"
+      # puts "#{train.type}"
       puts "Введите 1 => Прицепить вагон"
       puts "Введите 2 => Отцепить вагон"
       input = gets.to_i
-      if input == 1
-        train.hook_car(train.type)
-        puts "Поезд состоит из #{train.cars.size} вагона(ов)"
-      elsif input == 2
-        train.unhook_car
-        puts "Поезд состоит из #{train.cars.size} вагона(ов)"
-      else
-        puts "Введено неверное значение!"
-      end
+      hook(train, input)
       separator
-      
+
     when "11"
       puts "Выберите поезд из списка:"
       show_trains
@@ -183,15 +128,7 @@ loop do
       puts "Введите 1 => Отправить поезд вперед"
       puts "Введите 2 => Отправить поезд назад"
       input = gets.to_i
-      if input == 1
-        train.move_forward
-        puts "Поезд прибыл на станцию - #{train.current_station.name}"
-      elsif input == 2
-        train.move_backward
-        puts "Поезд прибыл на станцию - #{train.current_station.name}"
-      else
-        puts "Введено неверное значение!"
-      end
+      move(train, input)
       separator
 
     when "12"
@@ -201,3 +138,13 @@ loop do
       puts "Error!"
   end
 end
+
+# Создай класс Menu, методы которого ты будешь дергать после выбора пользователя. 
+# Просто код в длинном case'е - не есть хорошо. Сейчас есть зачатки подобного в main.rb, 
+# но это просто является длинным скриптом.
+# 2. Поезд должен сам ограничивать какие вагоны он может прицепить - грузовые или 
+# пассажирские. Сейчас эту логику почему-то обрабатывает меню
+# 3. В качестве типа - cargo, passenger - используй символы, а не строки.
+# 4. Метод hook_car принимает сейчас тип поезда, а не новый объект типа Car
+
+# Исправляй, пробуй. Возникнут вопросы - пиши в slack

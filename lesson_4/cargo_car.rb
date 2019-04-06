@@ -1,7 +1,7 @@
 class CargoCar < Car
 
   def initialize
-    @type = "Грузовой"
+    @type = :cargo
   end
 
 end
