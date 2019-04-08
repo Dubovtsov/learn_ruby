@@ -1,5 +1,4 @@
 class Car
-
   def initialize
     car_type = []
     
@@ -8,5 +7,4 @@ class Car
   def show_type
     puts "#{@type}"
   end
-  
 end

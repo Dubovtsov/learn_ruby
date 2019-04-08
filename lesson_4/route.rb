@@ -18,5 +18,4 @@ class Route
     # Метод .flatten преобразует многомерный массив в одномерный
     [@start_station, @stops, @end_station].flatten 
   end
-
 end
