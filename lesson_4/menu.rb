@@ -1,9 +1,7 @@
 class Menu
-  @trains = []
-  @stations = []
-  @routes = []
 
-  @menu = { 1 => "Добавить новую ж/д станцию",
+  def initialize
+    @menu = { 1 => "Добавить новую ж/д станцию",
             2 => "Добавить новый поезд",
             3 => "Добавить новый маршрут",
             4 => "Добавить остановку в маршрут",
@@ -16,72 +14,64 @@ class Menu
             11 => "Переместить поезд по маршруту",
             12 => "Завершить выполнение программы"
           }
+    @trains = []
+    @stations = []
+    @routes = []
+  end
 
   def run
-    Menu.top_menu
+    top_menu
     loop do
     choise = gets.chomp
     case choise
       when "menu"
-        Menu.menu
-        Menu.separator
-      
+        menu
+        separator
       when "1"
-        Menu.menu_add_station
-        Menu.separator
-      
+        menu_add_station
+        separator
       when "2"
-        Menu.menu_add_train
-        Menu.separator
+        menu_add_train
+        separator
       when "3"
-        Menu.menu_add_route
-        Menu.separator
-
+        menu_add_route
+        separator
       when "4"
-        Menu.menu_add_stop
-        Menu.separator
-      
+        menu_add_stop
+        separator
       when "5"
         puts "Список всех станций"
-        Menu.show_stations
-        Menu.separator
-
+        show_stations
+        separator
       when "6"
         puts "Список всех поездов"
-        Menu.show_trains
-        Menu.separator
-
+        show_trains
+        separator
       when "7"
         puts "Список доступных маршрутов"
-        Menu.show_routes
-        Menu.separator
-
+        show_routes
+        separator
       when "8"
-        Menu.menu_list_trains_on_station
-        Menu.separator
-
+        menu_list_trains_on_station
+        separator
       when "9"
-        Menu.menu_set_route
-        Menu.separator
-
+        menu_set_route
+        separator
       when "10"
-        Menu.menu_hook
-        Menu.separator
-
+        menu_hook
+        separator
       when "11"
-        Menu.menu_move
-        Menu.separator
-
+        menu_move
+        separator
       when "12"
         break
-
       else
         puts "Error!"
       end
     end
   end
 
-  def self.top_menu
+  def top_menu
     separator
     puts "Что вы хотите сделать? Введите цифру для выполнения операции"
     separator
@@ -89,22 +79,48 @@ class Menu
     separator
   end
 
-  def self.separator
+  def separator
     puts "-------------------------------------------------------------"
   end
 
-  def self.menu
+  def menu
     @menu.each { |key, value| puts "#{key} => #{value}" }
   end
 
-  def self.menu_add_station
+  # Сообщения
+
+  def message_add_train(train_number, type)
+    puts "Добавлен новый #{type == :cargo ? "грузовой" : "пассажирский"} поезд номер: #{train_number}"
+  end
+
+  def message_select_route
+    puts "Выберите маршрут:"
+  end
+
+  def message_select_train
+    puts "Выберите поезд из списка:"
+  end
+
+  def message_wrong_input
+    puts "Введено неверное значение!"
+  end
+
+  def message_station(station)
+    puts "Поезд прибыл на станцию - #{station}"
+  end
+
+  def message_train_cars_size(cars)
+    puts "Поезд состоит из #{cars} вагона(ов)"
+  end
+
+  def menu_add_station
     puts "Введите название станции:"
     name_station = gets.chomp
     station_include(name_station)
     puts "Добавлена новая станция: #{name_station}"
   end
 
-  def self.menu_add_train
+  def menu_add_train
     puts "Введите номер поезда:"
     train_number = gets.to_i
     puts "Выберите тип поезда:"
@@ -114,7 +130,7 @@ class Menu
     add_train(train_number, type)
   end
 
-  def self.menu_add_route
+  def menu_add_route
     puts "Введите начальную станцию:"
     start_station = gets.chomp
     puts "Введите конечную станцию:"
@@ -123,8 +139,8 @@ class Menu
     puts "Добавлен маршрут от #{start_station} до #{end_station}"
   end
 
-  def self.menu_add_stop
-    puts "Введите номер маршрута из списка:"
+  def menu_add_stop
+    message_select_route
     show_routes
     get_route = gets.to_i
     puts "Введите название остановки:"
@@ -134,7 +150,7 @@ class Menu
     show_route(route)
   end
 
-  def self.menu_list_trains_on_station
+  def menu_list_trains_on_station
     if @stations.empty?
       puts "Сначало добавьте станции"
     else
@@ -147,12 +163,12 @@ class Menu
     end
   end
 
-  def self.menu_set_route
-    puts "Выберите поезд из списка"
+  def menu_set_route
+    message_select_train
     show_trains
     index_train = gets.to_i
     train = @trains[index_train -1]
-    puts "Выберите маршрут"
+    message_select_route
     show_routes
     index_route = gets.to_i
     route = @routes[index_route - 1]
@@ -160,8 +176,8 @@ class Menu
     puts "Поезд прибыл на станцию - #{train.current_station.name}"
   end
 
-  def self.menu_hook
-    puts "Выберите поезд из списка:"
+  def menu_hook
+    message_select_train
     show_trains
     index_train = gets.to_i
     train = @trains[index_train -1]
@@ -171,8 +187,8 @@ class Menu
     hook(train, input)
   end
 
-  def self.menu_move
-    puts "Выберите поезд из списка:"
+  def menu_move
+    message_select_train
     show_trains
     index_train = gets.to_i
     train = @trains[index_train -1]
@@ -182,7 +198,7 @@ class Menu
     move(train, input)
   end
 
-  def self.station_include(name_station)
+  def station_include(name_station)
     if @stations.any? { |station, index| station.name == name_station }
       return @stations.select{ |station| station.name == name_station }
     else
@@ -191,57 +207,59 @@ class Menu
     end
   end
 
-  def self.show_route(route)
+  def show_route(route)
     route.train_route.each_with_index { |station, station_index| print " -> " if station_index > 0; print station.name }
     print "\n"
   end
 
-  def self.show_routes
+  def show_routes
     @routes.each_with_index do |route, index|
       print "#{index + 1} - "
       show_route(route)
     end
   end
 
-  def self.show_trains
+  def show_trains
     @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
   end
 
-  def self.show_stations
+  def show_stations
     @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
   end
 
-  def self.add_train(train_number, type)
+  def add_train(train_number, type)
     if type == 2
-      @trains << CargoTrain.new(train_number)
-      puts "Добавлен новый грузовой поезд номер: #{train_number}"
+      cargo_train = CargoTrain.new(train_number)
+      @trains << cargo_train
+      message_add_train(train_number, cargo_train.type)
     else
-      @trains << PassengerTrain.new(train_number)
-      puts "Добавлен новый пассажирский поезд номер: #{train_number}"
+      passenger_train = PassengerTrain.new(train_number)
+      @trains << passenger_train
+      message_add_train(train_number, passenger_train.type)
     end
   end
 
-  def self.move(train, input)
+  def move(train, input)
     if input == 1
       train.move_forward
-      puts "Поезд прибыл на станцию - #{train.current_station.name}"
+      message_station(train.current_station.name)
     elsif input == 2
       train.move_backward
-      puts "Поезд прибыл на станцию - #{train.current_station.name}"
+      message_station(train.current_station.name)
     else
-      puts "Введено неверное значение!"
+      message_wrong_input
     end
   end
 
-  def self.hook(train, input)
+  def hook(train, input)
     if input == 1
       train.is_a?(CargoTrain) ? train.hook_car(CargoCar.new) : train.hook_car(PassengerCar.new)
-      puts "Поезд состоит из #{train.cars.size} вагона(ов)"
+      message_train_cars_size(train.cars.size)
     elsif input == 2
       train.unhook_car
-      puts "Поезд состоит из #{train.cars.size} вагона(ов)"
+      message_train_cars_size(train.cars.size)
     else
-      puts "Введено неверное значение!"
+      message_wrong_input
     end
   end
 end
