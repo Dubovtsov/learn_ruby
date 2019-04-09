@@ -26,43 +26,31 @@ class Menu
     case choise
       when "menu"
         menu
-        separator
       when "1"
         menu_add_station
-        separator
       when "2"
         menu_add_train
-        separator
       when "3"
         menu_add_route
-        separator
       when "4"
         menu_add_stop
-        separator
       when "5"
         puts "Список всех станций"
         show_stations
-        separator
       when "6"
         puts "Список всех поездов"
         show_trains
-        separator
       when "7"
         puts "Список доступных маршрутов"
         show_routes
-        separator
       when "8"
         menu_list_trains_on_station
-        separator
       when "9"
         menu_set_route
-        separator
       when "10"
         menu_hook
-        separator
       when "11"
         menu_move
-        separator
       when "12"
         break
       else
@@ -118,6 +106,8 @@ class Menu
     name_station = gets.chomp
     station_include(name_station)
     puts "Добавлена новая станция: #{name_station}"
+    separator
+    menu
   end
 
   def menu_add_train
@@ -128,6 +118,8 @@ class Menu
     puts "2 - Грузовой"
     type = gets.to_i
     add_train(train_number, type)
+    separator
+    menu
   end
 
   def menu_add_route
@@ -137,6 +129,8 @@ class Menu
     end_station = gets.chomp
     @routes << Route.new(station_include(start_station), station_include(end_station))
     puts "Добавлен маршрут от #{start_station} до #{end_station}"
+    separator
+    menu
   end
 
   def menu_add_stop
@@ -148,6 +142,8 @@ class Menu
     route = @routes[get_route - 1]
     route.add_station(station_include(stop))
     show_route(route)
+    separator
+    menu
   end
 
   def menu_list_trains_on_station
@@ -161,6 +157,8 @@ class Menu
       puts "Список поездов на станции:"
       puts "Нет поездов на станции" if station.get_trains.empty?
     end
+    separator
+    menu
   end
 
   def menu_set_route
@@ -174,6 +172,8 @@ class Menu
     route = @routes[index_route - 1]
     train.set_route(route)
     puts "Поезд прибыл на станцию - #{train.current_station.name}"
+    separator
+    menu
   end
 
   def menu_hook
@@ -217,14 +217,17 @@ class Menu
       print "#{index + 1} - "
       show_route(route)
     end
+    separator
   end
 
   def show_trains
     @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
+    separator
   end
 
   def show_stations
     @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+    separator
   end
 
   def add_train(train_number, type)
@@ -249,6 +252,8 @@ class Menu
     else
       message_wrong_input
     end
+    separator
+    menu
   end
 
   def hook(train, input)
@@ -261,5 +266,7 @@ class Menu
     else
       message_wrong_input
     end
+    separator
+    menu
   end
 end
