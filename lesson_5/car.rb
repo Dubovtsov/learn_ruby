@@ -3,7 +3,6 @@ class Car
   include Manufacturer
 
   def initialize
-    # car_type = []
     @manufacturer_name = "China"
   end
 
