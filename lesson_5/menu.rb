@@ -39,10 +39,11 @@ class Menu
       when "5"
         puts "Список всех станций"
         show_stations
+        debugger_display_stations
       when "6"
         puts "Список всех поездов"
         show_trains
-        display_trains
+        debugger_display_trains
       when "7"
         puts "Список доступных маршрутов"
         show_routes
@@ -267,7 +268,7 @@ class Menu
     if input == 1
       train.is_a?(CargoTrain) ? train.hook_car(CargoCar.new) : train.hook_car(PassengerCar.new)
       message_train_cars_size(train.cars.size)
-      display_cars(train)
+      debugger_display_cars(train)
     elsif input == 2
       train.unhook_car
       message_train_cars_size(train.cars.size)

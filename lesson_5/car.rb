@@ -1,6 +1,6 @@
 require_relative 'manufacturer'
 class Car
-	include Manufacturer
+  include Manufacturer
 
   def initialize
     # car_type = []

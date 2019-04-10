@@ -1,6 +1,6 @@
 # Производитель
 module Manufacturer
-	attr_accessor :manufacturer_name
+  attr_accessor :manufacturer_name
 end
 
 # Создать модуль, который позволит указывать название компании-
