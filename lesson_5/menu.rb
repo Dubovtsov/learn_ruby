@@ -1,5 +1,6 @@
+require_relative 'debugger'
 class Menu
-
+  include Debugger
   def initialize
     @menu = { 1 => "Добавить новую ж/д станцию",
             2 => "Добавить новый поезд",
@@ -12,7 +13,8 @@ class Menu
             9 => "Передать маршрут поезду",
             10 => "Добавить/Отцепить вагон",
             11 => "Переместить поезд по маршруту",
-            12 => "Завершить выполнение программы"
+            12 => "Найти поезд по номеру",
+            13 => "Завершить выполнение программы"
           }
     @trains = []
     @stations = []
@@ -40,6 +42,7 @@ class Menu
       when "6"
         puts "Список всех поездов"
         show_trains
+        display_trains
       when "7"
         puts "Список доступных маршрутов"
         show_routes
@@ -54,7 +57,7 @@ class Menu
       when "12"
         puts "Найти поезд по номеру"
         train_number = gets.to_i
-        puts "#{Train.find(train_number)}"
+        puts Train.find(train_number) != nil ? "#{Train.find(train_number)}" : "Поезд не найден"
       when "13"
         break
       else
@@ -225,7 +228,7 @@ class Menu
   end
 
   def show_trains
-    @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
+    @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type} - #{train.manufacturer_name}" }
     separator
   end
 
@@ -236,11 +239,11 @@ class Menu
 
   def add_train(train_number, type)
     if type == 2
-      cargo_train = CargoTrain.new(train_number)
+      cargo_train = CargoTrain.new(train_number, "ChinaTrain")
       @trains << cargo_train
       message_add_train(train_number, cargo_train.type)
     else
-      passenger_train = PassengerTrain.new(train_number)
+      passenger_train = PassengerTrain.new(train_number, "ChinaTrain")
       @trains << passenger_train
       message_add_train(train_number, passenger_train.type)
     end
@@ -264,6 +267,7 @@ class Menu
     if input == 1
       train.is_a?(CargoTrain) ? train.hook_car(CargoCar.new) : train.hook_car(PassengerCar.new)
       message_train_cars_size(train.cars.size)
+      display_cars(train)
     elsif input == 2
       train.unhook_car
       message_train_cars_size(train.cars.size)

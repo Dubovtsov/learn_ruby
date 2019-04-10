@@ -1,17 +1,24 @@
+require_relative 'manufacturer'
 class Train
+  include Manufacturer
   attr_reader :speed, :type, :train_number, :current_station, :route, :cars
 
   @@trains = {}
 
-  def initialize(train_number)
+  def initialize(train_number, manufacturer_name = nil)
     @train_number = train_number
     @speed = 0
     @cars = []
+    @manufacturer_name = manufacturer_name
     @@trains[train_number] = self
   end
 
   def self.find(train_number)
     @@trains[train_number]
+  end
+
+  def self.trains
+    @@trains
   end
 
   # Метод набора скорости
@@ -67,7 +74,7 @@ class Train
 
   protected
 
-# Вызывается другими методами. Самостоятельно не используется 
+  # Вызывается другими методами. Самостоятельно не используется 
   def move_train
     @current_station.train_departure(self)
     @current_station = @route.train_route[@current_station_index]
