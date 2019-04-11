@@ -31,32 +31,32 @@ class Menu
       when "menu"
         menu
       when "1"
-        menu_add_station
+        with_separator(menu_add_station)
       when "2"
-        menu_add_train
+        with_separator(menu_add_train)
       when "3"
-        menu_add_route
+        with_separator(menu_add_route)
       when "4"
-        menu_add_stop
+        with_separator(menu_add_stop)
       when "5"
         puts "Список всех станций"
-        show_stations
-        debugger_display_stations
+        with_separator(show_stations)
+        with_separator(debugger_display_stations)
       when "6"
         puts "Список всех поездов"
-        show_trains
-        debugger_display_trains
+        with_separator(show_trains)
+        with_separator(debugger_display_trains)
       when "7"
         puts "Список доступных маршрутов"
-        show_routes
+        with_separator(show_routes)
       when "8"
-        menu_list_trains_on_station
+        with_separator(menu_list_trains_on_station)
       when "9"
-        menu_set_route
+        with_separator(menu_set_route)
       when "10"
-        menu_hook
+        with_separator(menu_hook)
       when "11"
-        menu_move
+        with_separator(menu_move)
       when "12"
         puts "Найти поезд по номеру"
         train_number = gets.to_i
@@ -73,12 +73,16 @@ class Menu
     separator
     puts "Что вы хотите сделать? Введите цифру для выполнения операции"
     separator
-    menu
-    separator
+    with_separator(menu)
   end
 
   def separator
     puts "-------------------------------------------------------------"
+  end
+
+  def with_separator(method_name)
+    method_name
+    separator
   end
 
   def menu
@@ -88,7 +92,7 @@ class Menu
   # Сообщения
 
   def message_add_train(train_number, type)
-    puts "Добавлен новый #{type == :cargo ? "грузовой" : "пассажирский"} поезд номер: #{train_number}"
+    puts "Добавлен новый #{type == :cargo ? "грузовой" : "пассажирский"} поезд номер #{train_number}"
   end
 
   def message_select_route
@@ -104,7 +108,7 @@ class Menu
   end
 
   def message_station(station)
-    puts "Поезд прибыл на станцию - #{station}"
+    puts "Поезд прибыл на станцию => #{station}"
   end
 
   def message_train_cars_size(cars)
@@ -115,7 +119,7 @@ class Menu
     puts "Введите название станции:"
     name_station = gets.chomp
     station_include(name_station)
-    puts "Добавлена новая станция: #{name_station}"
+    puts "Добавлена новая станция => #{name_station}"
     separator
     puts "Счётчик станций: #{Station.instances}"
     separator
@@ -233,17 +237,14 @@ class Menu
       print "#{index + 1} - "
       show_route(route)
     end
-    separator
   end
 
   def show_trains
     @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type} - #{train.manufacturer_name}" }
-    separator
   end
 
   def show_stations
     Station.all.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
-    separator
   end
 
   def add_train(train_number, type)
@@ -276,7 +277,7 @@ class Menu
     if input == 1
       train.is_a?(CargoTrain) ? train.hook_car(CargoCar.new) : train.hook_car(PassengerCar.new)
       message_train_cars_size(train.cars.size)
-      debugger_display_cars(train)
+      with_separator(debugger_display_cars(train))
     elsif input == 2
       train.unhook_car
       message_train_cars_size(train.cars.size)
