@@ -5,7 +5,7 @@ class Train
   include Manufacturer
   include InstanceCounter
   attr_reader :speed, :type, :train_number, :current_station, :route, :cars
-
+  attr_accessor :instances
   @@trains = {}
 
   def initialize(train_number, manufacturer_name = nil)

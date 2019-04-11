@@ -1,9 +1,9 @@
 require_relative 'instance_counter'
 
 class Station
+  include InstanceCounter
   attr_reader :name, :trains
-  extend InstanceCounter::ClassMethods
-  include InstanceCounter::InstanceMethods
+
   @@stations = []
 
   def initialize(name)
@@ -12,7 +12,7 @@ class Station
     @@stations << self
     register_instance
   end
-
+  
   def self.all
     @@stations
   end

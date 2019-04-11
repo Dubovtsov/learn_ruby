@@ -117,7 +117,7 @@ class Menu
     station_include(name_station)
     puts "Добавлена новая станция: #{name_station}"
     separator
-    puts self.class.instances
+    puts "Счётчик станций: #{Station.instances}"
     separator
     menu
   end
@@ -130,7 +130,7 @@ class Menu
     puts "2 - Грузовой"
     type = gets.to_i
     add_train(train_number, type)
-    puts self.class.instances
+    puts "Счётчик поездов: #{Train.instances}"
     separator
     menu
   end
@@ -143,7 +143,7 @@ class Menu
     @routes << Route.new(station_include(start_station), station_include(end_station))
     puts "Добавлен маршрут от #{start_station} до #{end_station}"
     separator
-    puts self.class.instances
+    puts "Счётчик маршрутов: #{Route.instances}"
     separator
     menu
   end
