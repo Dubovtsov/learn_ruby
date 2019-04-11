@@ -6,8 +6,6 @@ module InstanceCounter
 
   module ClassMethods
     attr_reader :instances
-    @instances ||= 0
-
     protected
 
     def register
