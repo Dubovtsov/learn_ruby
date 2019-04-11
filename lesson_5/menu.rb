@@ -130,7 +130,8 @@ class Menu
     puts "2 - Грузовой"
     type = gets.to_i
     add_train(train_number, type)
-    puts "Счётчик поездов: #{Train.instances}"
+    puts "Счётчик грузовых поездов: #{CargoTrain.instances}"
+    puts "Счётчик пассажирских поездов: #{PassengerTrain.instances}"
     separator
     menu
   end

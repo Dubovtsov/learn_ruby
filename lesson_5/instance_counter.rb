@@ -5,15 +5,14 @@ module InstanceCounter
   end
 
   module ClassMethods
-    def instances
-      @instance ||= 0
-    end
+    attr_reader :instances
+    @instances ||= 0
 
     protected
 
     def register
-      @instance ||= 0
-      @instance += 1
+      @instances ||= 0
+      @instances += 1
     end
   end
 
