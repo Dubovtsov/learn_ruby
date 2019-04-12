@@ -39,15 +39,12 @@ class Menu
       when "4"
         with_separator(menu_add_stop)
       when "5"
-        puts "Список всех станций"
         with_separator(show_stations)
         with_separator(debugger_display_stations)
       when "6"
-        puts "Список всех поездов"
         with_separator(show_trains)
         with_separator(debugger_display_trains)
       when "7"
-        puts "Список доступных маршрутов"
         with_separator(show_routes)
       when "8"
         with_separator(menu_list_trains_on_station)
@@ -58,9 +55,7 @@ class Menu
       when "11"
         with_separator(menu_move)
       when "12"
-        puts "Найти поезд по номеру"
-        train_number = gets.to_i
-        puts Train.find(train_number) != nil ? "#{Train.find(train_number)}" : "Поезд не найден"
+        with_separator(menu_find_train)
       when "13"
         break
       else
@@ -218,6 +213,12 @@ class Menu
     move(train, input)
   end
 
+  def menu_find_train
+    puts "Найти поезд по номеру"
+    train_number = gets.to_i
+    puts Train.find(train_number) != nil ? "#{Train.find(train_number)}" : "Поезд не найден"
+  end
+
   def station_include(name_station)
     if @stations.any? { |station, index| station.name == name_station }
       return @stations.select{ |station| station.name == name_station }
@@ -233,6 +234,7 @@ class Menu
   end
 
   def show_routes
+    puts "Список доступных маршрутов"
     @routes.each_with_index do |route, index|
       print "#{index + 1} - "
       show_route(route)
@@ -240,10 +242,12 @@ class Menu
   end
 
   def show_trains
+    puts "Список всех поездов"
     @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type} - #{train.manufacturer_name}" }
   end
 
   def show_stations
+    puts "Список всех станций"
     Station.all.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
   end
 
