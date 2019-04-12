@@ -132,7 +132,7 @@ class Menu
     loop do
       puts "Введите номер поезда:"
       train_number = gets.chomp
-      if train_number.scan(/\D/).empty?
+      if train_number.scan(/\D/).empty? && !train_number.empty?
         train_number = train_number.to_i
         loop do
           puts "Выберите тип поезда:"
@@ -152,35 +152,63 @@ class Menu
         end
         break
       else
-        puts "Номер поезда не должен содержать букв!".upcase
+        puts "Номер поезда не должен содержать букв или быть пустым!".upcase
       end
     end
   end
 
   def menu_add_route
-    puts "Введите начальную станцию:"
-    start_station = gets.chomp
-    puts "Введите конечную станцию:"
-    end_station = gets.chomp
-    @routes << Route.new(station_include(start_station), station_include(end_station))
-    puts "Добавлен маршрут от #{start_station} до #{end_station}"
-    separator
-    puts "Счётчик маршрутов: #{Route.instances}"
-    separator
-    menu
+    loop do
+      puts "Введите начальную станцию:"
+      start_station = gets.chomp
+      if start_station.empty?
+        puts "Вы не ввели название станции!".upcase
+      else
+        loop do
+          puts "Введите конечную станцию:"
+          end_station = gets.chomp
+          if end_station.empty?
+            puts "Вы не ввели название станции!".upcase
+          else
+            @routes << Route.new(station_include(start_station), station_include(end_station))
+            puts "Добавлен маршрут от #{start_station} до #{end_station}"
+            separator
+            puts "Счётчик маршрутов: #{Route.instances}"
+            separator
+            menu
+            break
+          end
+        end
+        break
+      end
+    end
   end
 
   def menu_add_stop
-    message_select_route
-    show_routes
-    get_route = gets.to_i
-    puts "Введите название остановки:"
-    stop = gets.chomp
-    route = @routes[get_route - 1]
-    route.add_station(station_include(stop))
-    show_route(route)
-    separator
-    menu
+    loop do
+      loop do
+        message_select_route
+        show_routes
+        get_route = gets.to_i
+        if get_route == 1 || get_route == 2 # переделать
+          puts "Введите название остановки:"
+          stop = gets.chomp
+          if stop.empty?
+            puts "Вы не ввели название остановки!".upcase
+          else
+            route = @routes[get_route - 1]
+            route.add_station(station_include(stop))
+            show_route(route)
+            separator
+            menu
+            break
+          end
+        else
+          puts "Выбранный параметр не соответствует списку доступных!".upcase
+        end
+      end
+      break
+    end
   end
 
   def menu_list_trains_on_station
@@ -214,14 +242,30 @@ class Menu
   end
 
   def menu_hook
-    message_select_train
-    show_trains
-    index_train = gets.to_i
-    train = @trains[index_train -1]
-    puts "Введите 1 => Прицепить вагон"
-    puts "Введите 2 => Отцепить вагон"
-    input = gets.to_i
-    hook(train, input)
+    loop do
+      loop do
+        message_select_train
+        show_trains
+        index_train = gets.to_i
+        if index_train == 0 && index_train > @trains.size # не работает
+          puts "Выбранный параметр не соответствует списку доступных!".upcase 
+        else
+          # index_train = index_train.to_i
+          train = @trains[index_train -1]
+          puts "Введите 1 => Прицепить вагон"
+          puts "Введите 2 => Отцепить вагон"
+          input = gets.to_i
+          if input == 1 || input == 2
+            hook(train, input)
+            break
+          else
+            puts "Выбранный параметр не соответствует списку доступных!".upcase
+          end
+          
+        end
+      end
+      break
+    end
   end
 
   def menu_move
