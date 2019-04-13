@@ -102,6 +102,10 @@ class Menu
     puts "Введено неверное значение!"
   end
 
+  def message_wrong_parameter
+    puts "Выбранный параметр не соответствует списку доступных!".upcase
+  end
+
   def message_station(station)
     puts "Поезд прибыл на станцию => #{station}"
   end
@@ -147,7 +151,7 @@ class Menu
             menu
             break
           else
-            puts "Выбранный тип отсутствует в списке!".upcase
+            message_wrong_parameter
           end
         end
         break
@@ -190,7 +194,9 @@ class Menu
         message_select_route
         show_routes
         get_route = gets.to_i
-        if get_route == 1 || get_route == 2 # переделать
+        if get_route == 0 || get_route > @routes.length
+          message_wrong_parameter
+        else
           puts "Введите название остановки:"
           stop = gets.chomp
           if stop.empty?
@@ -203,8 +209,6 @@ class Menu
             menu
             break
           end
-        else
-          puts "Выбранный параметр не соответствует списку доступных!".upcase
         end
       end
       break
@@ -227,18 +231,32 @@ class Menu
   end
 
   def menu_set_route
-    message_select_train
-    show_trains
-    index_train = gets.to_i
-    train = @trains[index_train -1]
-    message_select_route
-    show_routes
-    index_route = gets.to_i
-    route = @routes[index_route - 1]
-    train.set_route(route)
-    puts "Поезд прибыл на станцию - #{train.current_station.name}"
-    separator
-    menu
+    loop do
+      loop do
+        message_select_train
+        show_trains
+        index_train = gets.to_i
+        if index_train == 0 || index_train > @trains.length
+          message_wrong_parameter
+        else
+          train = @trains[index_train -1]
+          message_select_route
+          show_routes
+          get_route = gets.to_i
+          if get_route == 0 || get_route > @routes.length
+            message_wrong_parameter
+          else
+            route = @routes[get_route - 1]
+            train.set_route(route)
+            puts "Поезд прибыл на станцию - #{train.current_station.name}"
+            separator
+            menu
+            break
+          end
+        end
+      end
+      break
+    end
   end
 
   def menu_hook
@@ -247,10 +265,9 @@ class Menu
         message_select_train
         show_trains
         index_train = gets.to_i
-        if index_train == 0 && index_train > @trains.size # не работает
-          puts "Выбранный параметр не соответствует списку доступных!".upcase 
+        if index_train == 0 || index_train > @trains.length
+          message_wrong_parameter
         else
-          # index_train = index_train.to_i
           train = @trains[index_train -1]
           puts "Введите 1 => Прицепить вагон"
           puts "Введите 2 => Отцепить вагон"
@@ -259,7 +276,7 @@ class Menu
             hook(train, input)
             break
           else
-            puts "Выбранный параметр не соответствует списку доступных!".upcase
+            message_wrong_parameter
           end
           
         end
@@ -269,14 +286,21 @@ class Menu
   end
 
   def menu_move
-    message_select_train
-    show_trains
-    index_train = gets.to_i
-    train = @trains[index_train -1]
-    puts "Введите 1 => Отправить поезд вперед"
-    puts "Введите 2 => Отправить поезд назад"
-    input = gets.to_i
-    move(train, input)
+    loop do
+      message_select_train
+      show_trains
+      index_train = gets.to_i
+      if index_train == 0 || index_train > @trains.length
+        message_wrong_parameter
+      else
+        train = @trains[index_train -1]
+        puts "Введите 1 => Отправить поезд вперед"
+        puts "Введите 2 => Отправить поезд назад"
+        input = gets.to_i
+        move(train, input)
+        break
+      end
+    end
   end
 
   def menu_find_train
