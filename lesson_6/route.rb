@@ -8,6 +8,7 @@ class Route
     @start_station = start_station
     @end_station = end_station
     @stops = []
+    validate!
     register_instance
   end
 
@@ -22,5 +23,19 @@ class Route
   def train_route
     # Метод .flatten преобразует многомерный массив в одномерный
     [@start_station, @stops, @end_station].flatten 
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  protected
+
+  def validate!
+    raise "Название начальной станции не может быть пустым" if start_station.empty?
+    raise "Название конечной станции не может быть пустым" if end_station.empty?
   end
 end

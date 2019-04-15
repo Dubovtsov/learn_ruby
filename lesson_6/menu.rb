@@ -157,26 +157,17 @@ class Menu
     loop do
       puts "Введите начальную станцию:"
       start_station = gets.chomp
-      if start_station.empty?
-        puts "Вы не ввели название станции!".upcase
-      else
-        loop do
-          puts "Введите конечную станцию:"
-          end_station = gets.chomp
-          if end_station.empty?
-            puts "Вы не ввели название станции!".upcase
-          else
-            @routes << Route.new(station_include(start_station), station_include(end_station))
-            puts "Добавлен маршрут от #{start_station} до #{end_station}"
-            separator
-            puts "Счётчик маршрутов: #{Route.instances}"
-            separator
-            menu
-            break
-          end
-        end
-        break
-      end
+      puts "Введите конечную станцию:"
+      end_station = gets.chomp
+      @routes << Route.new(station_include(start_station), station_include(end_station))
+      puts "Добавлен маршрут от #{start_station} до #{end_station}"
+      separator
+      puts "Счётчик маршрутов: #{Route.instances}"
+      separator
+      menu
+      break
+    rescue StandardError => e
+      puts e.message
     end
   end
 
@@ -191,17 +182,15 @@ class Menu
         else
           puts "Введите название остановки:"
           stop = gets.chomp
-          if stop.empty?
-            puts "Вы не ввели название остановки!".upcase
-          else
-            route = @routes[get_route - 1]
-            route.add_station(station_include(stop))
-            show_route(route)
-            separator
-            menu
-            break
-          end
+          route = @routes[get_route - 1]
+          route.add_station(station_include(stop))
+          show_route(route)
+          separator
+          menu
+          break
         end
+      rescue StandardError => e
+        puts e.message
       end
       break
     end
@@ -211,7 +200,7 @@ class Menu
     if @stations.empty?
       puts "Сначало добавьте станции"
     else
-      puts "Выберите станцию"
+      puts "Выберите станцию из списка:"
       show_stations
       index_station = gets.to_i
       station = @stations[index_station -1]

@@ -54,6 +54,6 @@ class Station
 
   def validate!
     raise "Имя не должно быть пустым" if name.empty?
-    raise "Имя станции должно быть не менее 5 символов" if name.length < 5
+    raise "Имя станции должно быть не менее 4 символов" if name.length < 4
   end
 end

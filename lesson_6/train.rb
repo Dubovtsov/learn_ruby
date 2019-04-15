@@ -7,7 +7,7 @@ class Train
   
   attr_reader :speed, :type, :train_number, :current_station, :route, :cars
 
-  NUMBER_FORMAT = /[A-Z0-9]{3}-?[A-Z0-9]{2}/i
+  NUMBER_FORMAT = /^([A-Z0-9]{3})-?([A-Z0-9]{2})$/i
   @@trains = {}
 
   def initialize(train_number, manufacturer_name = nil)
@@ -92,6 +92,7 @@ class Train
     raise "Номер поезда не должен быть пустым" if train_number.empty?
     raise "Номер поезда должен быть не менее 5 символов" if train_number.length < 5
     raise "Номер поезда не соответствует формату" if train_number !~ NUMBER_FORMAT
+    raise "Не указан тип поезда" if @type.empty?
   end
   
   # Вызывается другими методами. Самостоятельно не используется 
