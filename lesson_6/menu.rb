@@ -115,14 +115,19 @@ class Menu
   end
 
   def menu_add_station
-    puts "Введите название станции:"
-    name_station = gets.chomp
-    station_include(name_station)
-    puts "Добавлена новая станция => #{name_station}"
-    separator
-    puts "Счётчик станций: #{Station.instances}"
-    separator
-    menu
+    loop do
+      puts "Введите название станции:"
+      name_station = gets.chomp
+      station_include(name_station)
+      puts "Добавлена новая станция => #{name_station}"
+      separator
+      puts "Счётчик станций: #{Station.instances}"
+      separator
+      menu
+      break
+    rescue StandardError => e
+      puts e.message
+    end
   end
 
   def menu_add_train
