@@ -7,7 +7,7 @@ class Train
   
   attr_reader :speed, :type, :train_number, :current_station, :route, :cars
 
-  NUMBER_FORMAT = /[A-Z0-9]{3}-?[A-Z0-9]{2}$/i
+  NUMBER_FORMAT = /[A-Z0-9]{3}-?[A-Z0-9]{2}/i
   @@trains = {}
 
   def initialize(train_number, manufacturer_name = nil)
@@ -15,9 +15,9 @@ class Train
     @speed = 0
     @cars = []
     @manufacturer_name = manufacturer_name
+    validate!
     @@trains[train_number] = self
     register_instance
-    validate!
   end
 
   def valid?

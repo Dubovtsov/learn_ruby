@@ -132,30 +132,24 @@ class Menu
 
   def menu_add_train
     loop do
+      puts "Выберите тип поезда:"
+      puts "1 - Пассажирский"
+      puts "2 - Грузовой"
+      type = gets.to_i
       puts "Введите номер поезда:"
-      train_number = gets.chomp
-      if train_number.scan(/\D/).empty? && !train_number.empty?
-        train_number = train_number.to_i
-        loop do
-          puts "Выберите тип поезда:"
-          puts "1 - Пассажирский"
-          puts "2 - Грузовой"
-          type = gets.to_i
-          if type == 1 || type == 2
-            add_train(train_number, type)
-            puts "Счётчик грузовых поездов: #{CargoTrain.instances}"
-            puts "Счётчик пассажирских поездов: #{PassengerTrain.instances}"
-            separator
-            menu
-            break
-          else
-            message_wrong_parameter
-          end
-        end
+      train_number = gets.chomp.upcase
+      if type == 1 || type == 2
+        add_train(train_number, type)
+        puts "Счётчик грузовых поездов: #{CargoTrain.instances}"
+        puts "Счётчик пассажирских поездов: #{PassengerTrain.instances}"
+        separator
+        menu
         break
       else
-        puts "Номер поезда не должен содержать букв или быть пустым!".upcase
+        message_wrong_parameter
       end
+    rescue StandardError => e
+      puts e.message
     end
   end
 
