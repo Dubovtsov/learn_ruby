@@ -40,10 +40,10 @@ class Menu
         with_separator(menu_add_stop)
       when "5"
         with_separator(show_stations)
-        with_separator(debugger_display_stations)
+        # with_separator(debugger_display_stations)
       when "6"
         with_separator(show_trains)
-        with_separator(debugger_display_trains)
+        # with_separator(debugger_display_trains)
       when "7"
         with_separator(show_routes)
       when "8"
@@ -203,7 +203,7 @@ class Menu
       puts "Выберите станцию из списка:"
       show_stations
       index_station = gets.to_i
-      station = @stations[index_station -1]
+      station = @stations[index_station - 1]
       puts "Список поездов на станции:"
       puts "Нет поездов на станции" if station.get_trains.empty?
     end
@@ -220,7 +220,7 @@ class Menu
         if index_train == 0 || index_train > @trains.length
           message_wrong_parameter
         else
-          train = @trains[index_train -1]
+          train = @trains[index_train - 1]
           message_select_route
           show_routes
           get_route = gets.to_i
@@ -249,7 +249,7 @@ class Menu
         if index_train == 0 || index_train > @trains.length
           message_wrong_parameter
         else
-          train = @trains[index_train -1]
+          train = @trains[index_train - 1]
           puts "Введите 1 => Прицепить вагон"
           puts "Введите 2 => Отцепить вагон"
           input = gets.to_i
@@ -259,7 +259,6 @@ class Menu
           else
             message_wrong_parameter
           end
-          
         end
       end
       break
@@ -274,7 +273,7 @@ class Menu
       if index_train == 0 || index_train > @trains.length
         message_wrong_parameter
       else
-        train = @trains[index_train -1]
+        train = @trains[index_train - 1]
         puts "Введите 1 => Отправить поезд вперед"
         puts "Введите 2 => Отправить поезд назад"
         input = gets.to_i
@@ -286,7 +285,7 @@ class Menu
 
   def menu_find_train
     puts "Найти поезд по номеру"
-    train_number = gets.to_i
+    train_number = gets.chomp
     puts Train.find(train_number) != nil ? "#{Train.find(train_number)}" : "Поезд не найден"
   end
 
@@ -314,7 +313,7 @@ class Menu
 
   def show_trains
     puts "Список всех поездов"
-    @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type} - #{train.manufacturer_name}" }
+    @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
   end
 
   def show_stations
@@ -352,7 +351,7 @@ class Menu
     if input == 1
       train.is_a?(CargoTrain) ? train.hook_car(CargoCar.new) : train.hook_car(PassengerCar.new)
       message_train_cars_size(train.cars.size)
-      with_separator(debugger_display_cars(train))
+      # with_separator(debugger_display_cars(train))
     elsif input == 2
       train.unhook_car
       message_train_cars_size(train.cars.size)

@@ -21,8 +21,8 @@ class Car
   protected
 
   def validate!
-    raise "Название производителя не должно быть пустым" if @manufactured_name.empty?
-    raise "Название производителя должно быть не менее 4 символов" if @manufactured_name.length < 4
+    raise "Название производителя не должно быть пустым" if @manufacturer_name.empty?
+    raise "Название производителя должно быть не менее 4 символов" if @manufacturer_name.length < 4
     raise "Тип не должен быть пустым" if @type.empty?
   end
 end
