@@ -61,9 +61,9 @@ class Train
     puts "#{@cars.size}"
   end
 
-  def each_cars(train, &block)
+  def each_cars(&block)
     if block_given?
-      train.cars.each { yield(train) }
+      @cars.each { yield(self) }
     else
       puts "#{@cars}"
     end

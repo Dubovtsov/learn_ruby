@@ -318,7 +318,11 @@ class Menu
 
   def show_stations
     puts "Список всех станций"
-    Station.all.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+    Station.all.each_with_index do |station, index| 
+      # переделать
+      puts "#{index + 1} - #{station.name} - #{station.get_trains{|train| puts train.cars}}"
+    end
+    Station.all.each {|station| station.get_trains{|st| puts st}}
   end
 
   def add_train(train_number, type)
@@ -351,7 +355,7 @@ class Menu
     if input == 1
       train.is_a?(CargoTrain) ? train.hook_car(CargoCar.new) : train.hook_car(PassengerCar.new)
       message_train_cars_size(train.cars.size)
-      train.each_cars(train) { |car| puts car }
+      train.each_cars { |car| puts car }
       # with_separator(debugger_display_cars(train))
     elsif input == 2
       train.unhook_car

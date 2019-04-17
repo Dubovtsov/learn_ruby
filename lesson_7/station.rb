@@ -40,13 +40,17 @@ class Station
   end
 
   # Получение списка поездов на станции с возможностью выбора типа поездов
-  def get_trains(type = nil)
-    if type == :passenger
-      trains_type(type)
-    elsif type == :cargo
-      trains_type(type)
+  def get_trains(type = nil, &block)
+    if block_given?
+      @trains.each{ yield(self) }
     else
-      @trains.each_with_index{ |train, index| puts "#{index + 1} - поезд номер #{train.train_number} - #{train.type}" }
+      if type == :passenger
+        trains_type(type)
+      elsif type == :cargo
+        trains_type(type)
+      else
+        @trains.each_with_index{ |train, index| puts "#{index + 1} - поезд номер #{train.train_number} - #{train.type}" }
+      end
     end
   end
 
