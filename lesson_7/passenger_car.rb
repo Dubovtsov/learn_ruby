@@ -1,15 +1,16 @@
 class PassengerCar < Car
-  def initialize
+  attr_accessor :number_of_seats, :seats, :type
+  def initialize(manufacturer_name, number_of_seats)
+    super(manufacturer_name)
     @type = :passenger
-    @number_of_seats = 30
+    @number_of_seats = number_of_seats
     @seats = []
-    super
   end
 
   # Занять место в вагоне
   def place_is_taken
     @number_of_seat ||= 0
-    @seats << @number_of_seat += 1 if @number_of_seat < 30
+    @seats << @number_of_seat += 1 if @number_of_seat < @number_of_seats
   end
 
   # Освободить место в вагоне

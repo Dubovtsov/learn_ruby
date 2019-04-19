@@ -16,11 +16,13 @@ class Menu
               10 => "Добавить/Отцепить вагон",
               11 => "Переместить поезд по маршруту",
               12 => "Найти поезд по номеру",
-              13 => "Завершить выполнение программы"
+              13 => "Добавить вагон",
+              14 => "Завершить выполнение программы"
             }
     @trains = []
     @stations = []
     @routes = []
+    @cars = []
   end
 
   def run
@@ -57,6 +59,8 @@ class Menu
       when "12"
         with_separator(menu_find_train)
       when "13"
+        with_separator(menu_add_car)
+      when "14"
         break
       else
         puts "Error!"
@@ -76,8 +80,8 @@ class Menu
   end
 
   def with_separator(method_name)
-    method_name
     separator
+    method_name
   end
 
   def menu
@@ -122,7 +126,6 @@ class Menu
       puts "Добавлена новая станция => #{name_station}"
       separator
       puts "Счётчик станций: #{Station.instances}"
-      separator
       menu
       break
     rescue StandardError => e
@@ -185,14 +188,43 @@ class Menu
           route = @routes[get_route - 1]
           route.add_station(station_include(stop))
           show_route(route)
-          separator
-          menu
+          with_separator(menu)
           break
         end
       rescue StandardError => e
         puts e.message
       end
       break
+    end
+  end
+
+  def menu_add_car
+    loop do
+      puts "Выберите тип вагона:"
+      puts "1 - Пассажирский"
+      puts "2 - Грузовой"
+      type = gets.to_i
+      if type == 1
+        puts "Введите количество мест в вагоне:"
+        number_of_seats = gets.to_i
+        passenger_car = PassengerCar.new("China", number_of_seats)
+        @cars << passenger_car
+        with_separator(menu)
+        break
+      elsif type == 2
+        puts "Введите вместимость вагона в тоннах:"
+        car_capacity = gets.to_i
+        cargo_car = CargoCar.new("China", car_capacity)
+        @cars << cargo_car
+        show_cars
+        with_separator(menu)
+        break
+      else
+        message_wrong_parameter
+      end
+    rescue StandardError => e
+      puts e.message
+      puts e.backtrace
     end
   end
 
@@ -318,11 +350,16 @@ class Menu
 
   def show_stations
     puts "Список всех станций"
-    Station.all.each_with_index do |station, index| 
+    Station.all.each_with_index do |station, index|
       # переделать
-      puts "#{index + 1} - #{station.name} - #{station.get_trains{|train| puts train.cars}}"
+      # puts "#{index + 1} - поезд номер #{train.train_number} - #{train.type}"
+      puts "#{index + 1} - #{station.name}"
     end
-    Station.all.each {|station| station.get_trains{|st| puts st}}
+    # Station.all.each {|station| station.get_trains{|st| puts st}}
+  end
+
+  def show_cars
+    @cars.each_with_index{ |car, index| puts "#{index + 1} - #{car.to_s}" }
   end
 
   def add_train(train_number, type)
@@ -366,4 +403,5 @@ class Menu
     separator
     menu
   end
+
 end
