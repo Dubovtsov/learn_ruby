@@ -19,7 +19,11 @@ class Car
   end
 
   def to_s
-    puts "#{@type == :cargo ? "Грузовой" : "Пассажирский"} вагон, доступно для загрузки #{free_space} из #{@car_capacity}"
+    if @type == :cargo
+      "Грузовой вагон, доступно для загрузки #{free_space} из #{@car_capacity}"
+    else
+      "Пассажирский вагон, свободно мест #{number_of_empty_seats} из #{@number_of_seats}"
+    end
   end
 
   protected

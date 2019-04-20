@@ -80,8 +80,8 @@ class Menu
   end
 
   def with_separator(method_name)
-    separator
     method_name
+    separator
   end
 
   def menu
@@ -209,6 +209,7 @@ class Menu
         number_of_seats = gets.to_i
         passenger_car = PassengerCar.new("China", number_of_seats)
         @cars << passenger_car
+        with_separator(show_cars)
         with_separator(menu)
         break
       elsif type == 2
@@ -216,7 +217,7 @@ class Menu
         car_capacity = gets.to_i
         cargo_car = CargoCar.new("China", car_capacity)
         @cars << cargo_car
-        show_cars
+        with_separator(show_cars)
         with_separator(menu)
         break
       else
