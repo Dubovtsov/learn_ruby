@@ -198,6 +198,7 @@ class Menu
     end
   end
 
+# Добавление новых вагонов
   def menu_add_car
     loop do
       puts "Выберите тип вагона:"
@@ -229,6 +230,7 @@ class Menu
     end
   end
 
+# Список поездов на станции
   def menu_list_trains_on_station
     if @stations.empty?
       puts "Сначало добавьте станции"
@@ -238,12 +240,13 @@ class Menu
       index_station = gets.to_i
       station = @stations[index_station - 1]
       puts "Список поездов на станции:"
-      puts "Нет поездов на станции" if station.get_trains.empty?
+      station.each_trains_on_station{ |train| puts "#{train}" }
+      # puts "Нет поездов на станции" if station.get_trains.empty?
     end
-    separator
     menu
   end
 
+# Установка маршрута поезду
   def menu_set_route
     loop do
       loop do
@@ -286,7 +289,19 @@ class Menu
           puts "Введите 1 => Прицепить вагон"
           puts "Введите 2 => Отцепить вагон"
           input = gets.to_i
-          if input == 1 || input == 2
+          if input == 1
+            show_cars
+            puts "Выберите вагон, который хотите прицепить:"
+            input_car = gets.to_i
+            car = @cars[input_car - 1]
+            if train.is_a?(CargoTrain) && car.is_a?(CargoCar) || train.is_a?(PassengerTrain) && car.is_a?(PassengerCar)
+              hook(train, input, car)
+              break
+            else
+              puts "Несоответствие типов"
+              break
+            end
+          elsif input == 2
             hook(train, input)
             break
           else
@@ -346,21 +361,18 @@ class Menu
 
   def show_trains
     puts "Список всех поездов"
-    @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type}" }
+    @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.train_number} - #{train.type} - #{train.each_cars{|car| puts "#{car.to_s}"}}" }
   end
 
   def show_stations
     puts "Список всех станций"
     Station.all.each_with_index do |station, index|
-      # переделать
-      # puts "#{index + 1} - поезд номер #{train.train_number} - #{train.type}"
-      puts "#{index + 1} - #{station.name}"
+      puts "#{index + 1} - #{station.name} - #{station.each_trains_on_station{|train| puts "#{train.to_s}"}}"
     end
-    # Station.all.each {|station| station.get_trains{|st| puts st}}
   end
 
   def show_cars
-    @cars.each_with_index{ |car, index| puts "#{index + 1} - #{car.to_s}" }
+      @cars.each_with_index{ |car, index| puts "#{index + 1} - #{car.to_s}" }
   end
 
   def add_train(train_number, type)
@@ -389,9 +401,9 @@ class Menu
     menu
   end
 
-  def hook(train, input)
+  def hook(train, input, car = nil)
     if input == 1
-      train.is_a?(CargoTrain) ? train.hook_car(CargoCar.new) : train.hook_car(PassengerCar.new)
+      train.hook_car(car)
       message_train_cars_size(train.cars.size)
       train.each_cars { |car| puts car }
       # with_separator(debugger_display_cars(train))

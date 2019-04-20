@@ -39,6 +39,15 @@ class Station
     @trains.select { |train| train.type == type }
   end
 
+  def each_trains_on_station
+    if block_given?
+      @trains.each { |train| yield(train) }
+    else
+      puts "#{@trains}"
+    end
+  end
+
+
   # Получение списка поездов на станции с возможностью выбора типа поездов
   def get_trains(type = nil)
     # if block_given?

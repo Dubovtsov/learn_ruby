@@ -63,7 +63,7 @@ class Train
 
   def each_cars(&block)
     if block_given?
-      @cars.each { yield(self) }
+      @cars.each { |car| yield(car) }
     else
       puts "#{@cars}"
     end
@@ -92,6 +92,10 @@ class Train
   def move_backward
     @current_station_index -= 1 if @current_station_index > 0
     move_train
+  end
+
+  def to_s
+    "#{@type == :cargo ? "Грузовой" : "Пассажирский"} поезд номер #{train_number} - #{@cars.size} вагон(ов)"
   end
 
   protected
