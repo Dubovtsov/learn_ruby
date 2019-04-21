@@ -21,7 +21,7 @@ class CargoCar < Car
 
   # Занятый объем
   def cargo_inside
-    @cargo_inside.nil? ? "Груза в вагоне: 0" : "#{@cargo_inside.sum}"
+    @cargo_inside.nil? ? 0 : @cargo_inside.sum
   end
 
   # Свободный объем
