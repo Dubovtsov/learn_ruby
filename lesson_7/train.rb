@@ -62,11 +62,7 @@ class Train
   end
 
   def each_cars(&block)
-    if block_given?
-      @cars.each { |car| yield(car) }
-    else
-      puts "#{@cars}"
-    end
+    @cars.each { |car| yield(car) } if block_given?
   end
 
   def set_route(new_route)

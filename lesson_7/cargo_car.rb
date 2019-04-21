@@ -2,10 +2,11 @@ class CargoCar < Car
   attr_accessor :car_capacity, :cargo_inside, :type
 
   def initialize(manufacturer_name, car_capacity)
-    super(manufacturer_name)
     @type = :cargo
     @car_capacity = car_capacity
     @cargo_inside = []
+    validate!
+    super(manufacturer_name)
   end
 
   # Загрузка в вагон
@@ -20,7 +21,7 @@ class CargoCar < Car
 
   # Занятый объем
   def cargo_inside
-    puts @cargo_inside.nil? ? "Груза в вагоне: 0" : "#{@cargo_inside.sum}"
+    @cargo_inside.nil? ? "Груза в вагоне: 0" : "#{@cargo_inside.sum}"
   end
 
   # Свободный объем
@@ -31,6 +32,6 @@ class CargoCar < Car
   protected
 
   def validate!
-    
+    raise "Не задан объем!" if @car_capacity <= 0
   end
 end

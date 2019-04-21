@@ -241,7 +241,6 @@ class Menu
       station = @stations[index_station - 1]
       puts "Список поездов на станции:"
       station.each_trains_on_station{ |train| puts "#{train}" }
-      # puts "Нет поездов на станции" if station.get_trains.empty?
     end
     menu
   end
