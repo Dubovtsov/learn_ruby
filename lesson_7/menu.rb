@@ -367,7 +367,7 @@ class Menu
   def show_stations
     puts "Список всех станций"
     Station.all.each_with_index do |station, index|
-      puts "#{index + 1} - #{station.name} - #{station.each_trains_on_station{|train| puts "#{train.to_s}"}}"
+      puts "#{index + 1} - #{station.name} - #{station.each_trains_on_station{|train| puts "#{train.to_s} - #{train.each_cars{|car| puts "#{car.to_s}"}}"}}"
     end
   end
 
