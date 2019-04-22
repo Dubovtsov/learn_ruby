@@ -4,13 +4,13 @@ class Station
   include InstanceCounter
   attr_reader :name, :trains
 
-  @@stations = []
+  @stations = []
 
   def initialize(name)
     @trains = []
     @name = name
     validate!
-    @@stations << self
+    self.class.stations << self
     register_instance
   end
 
@@ -21,16 +21,14 @@ class Station
     false
   end
 
-  def self.all
-    @@stations
+  class << self
+    attr_reader :stations
   end
 
-  # Прибытие поезда
   def train_arrival(train)
     @trains << train
   end
 
-  # Отправление поезда
   def train_departure(train)
     @trains.delete(train)
   end
