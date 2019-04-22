@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer'
 class Car
   include Manufacturer
@@ -12,10 +14,6 @@ class Car
     true
   rescue StandardError
     false
-  end
-
-  def show_type
-    puts @type.to_s
   end
 
   def to_s

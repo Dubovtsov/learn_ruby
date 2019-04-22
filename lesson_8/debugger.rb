@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Debugger
   def debugger_message
     puts '!!! ИНФОРМАЦИЯ ДЛЯ ОТЛАДКИ !!!'

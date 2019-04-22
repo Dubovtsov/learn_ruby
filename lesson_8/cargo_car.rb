@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CargoCar < Car
   attr_accessor :car_capacity, :cargo_inside, :type
 
@@ -14,7 +16,7 @@ class CargoCar < Car
   end
 
   def unloading
-    @cargo_inside.pop unless @cargo_inside.nil?
+    @cargo_inside&.pop
   end
 
   def cargo_inside_car

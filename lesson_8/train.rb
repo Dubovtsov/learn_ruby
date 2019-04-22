@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 
@@ -5,9 +7,10 @@ class Train
   include Manufacturer
   include InstanceCounter
 
+  NUMBER_FORMAT = /^([A-Z0-9]{3})-?([A-Z0-9]{2})$/i.freeze
+
   attr_reader :speed, :type, :train_number, :current_station, :route, :cars
 
-  NUMBER_FORMAT = /^([A-Z0-9]{3})-?([A-Z0-9]{2})$/i.freeze
   @@trains = {}
 
   def initialize(train_number, manufacturer_name = nil)
@@ -35,7 +38,6 @@ class Train
   def speed_down(braking = 1)
     @speed -= braking
     @speed = 0 if @speed < 0
-    @speed
   end
 
   def hook_car(new_car)
@@ -47,7 +49,7 @@ class Train
   end
 
   def show_cars
-    puts @cars.size.to_s
+    @cars.size.to_s
   end
 
   def each_cars
@@ -83,6 +85,13 @@ class Train
     "#{@type == :cargo ? 'Грузовой' : 'Пассажирский'} поезд номер #{train_number} - #{@cars.size} вагон(ов)"
   end
 
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
+  end
+
   protected
 
   def validate!
@@ -90,13 +99,6 @@ class Train
     raise 'Номер поезда должен быть не менее 5 символов' if train_number.length < 5
     raise 'Номер поезда не соответствует формату' if train_number !~ NUMBER_FORMAT
     raise 'Не указан тип поезда' if @type.empty?
-  end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
   end
 
   def move_train

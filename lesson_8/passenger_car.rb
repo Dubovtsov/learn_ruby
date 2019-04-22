@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PassengerCar < Car
   attr_accessor :number_of_seats, :seats, :type
   def initialize(manufacturer_name, number_of_seats)
@@ -14,7 +16,7 @@ class PassengerCar < Car
   end
 
   def place_is_free
-    @seats.pop unless @seats.nil?
+    @seats&.pop
   end
 
   def number_of_occupied_places
