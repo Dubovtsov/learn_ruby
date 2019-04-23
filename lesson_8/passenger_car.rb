@@ -16,7 +16,7 @@ class PassengerCar < Car
   end
 
   def place_is_free
-    @seats&.pop
+    @seats.pop
   end
 
   def number_of_occupied_places

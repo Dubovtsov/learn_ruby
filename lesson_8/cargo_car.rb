@@ -16,7 +16,7 @@ class CargoCar < Car
   end
 
   def unloading
-    @cargo_inside&.pop
+    @cargo_inside.pop
   end
 
   def cargo_inside_car

@@ -1,27 +1,33 @@
 # frozen_string_literal: true
 
-require_relative 'debugger'
+require_relative 'modules/debugger.rb'
+require_relative 'modules/train_controller.rb'
+
 class Menu
   include Debugger
   include InstanceCounter
+  include TrainController
+
+  SELECTED_VALUE = [1, 2].freeze
+  MENU = {
+    1 => 'Добавить новую ж/д станцию',
+    2 => 'Добавить новый поезд',
+    3 => 'Добавить новый маршрут',
+    4 => 'Добавить остановку в маршрут',
+    5 => 'Список станций',
+    6 => 'Список поездов',
+    7 => 'Список маршрутов',
+    8 => 'Список поездов на станции',
+    9 => 'Передать маршрут поезду',
+    10 => 'Добавить/Отцепить вагон',
+    11 => 'Переместить поезд по маршруту',
+    12 => 'Найти поезд по номеру',
+    13 => 'Добавить вагон',
+    14 => 'Завершить выполнение программы'
+  }.freeze
 
   def initialize
-    @menu = {
-      1 => 'Добавить новую ж/д станцию',
-      2 => 'Добавить новый поезд',
-      3 => 'Добавить новый маршрут',
-      4 => 'Добавить остановку в маршрут',
-      5 => 'Список станций',
-      6 => 'Список поездов',
-      7 => 'Список маршрутов',
-      8 => 'Список поездов на станции',
-      9 => 'Передать маршрут поезду',
-      10 => 'Добавить/Отцепить вагон',
-      11 => 'Переместить поезд по маршруту',
-      12 => 'Найти поезд по номеру',
-      13 => 'Добавить вагон',
-      14 => 'Завершить выполнение программы'
-    }
+    @menu = MENU
     @trains = []
     @stations = []
     @routes = []
@@ -44,7 +50,7 @@ class Menu
       when '4'
         with_separator(menu_add_stop)
       when '5'
-        with_separator(show_stations)
+        with_separator(show_stations_with_trains)
       # with_separator(debugger_display_stations)
       when '6'
         with_separator(show_trains)
@@ -67,7 +73,7 @@ class Menu
         break
       else
         puts 'Error!'
-        end
+      end
     end
   end
 
@@ -143,7 +149,7 @@ class Menu
       type = gets.to_i
       puts 'Введите номер поезда:'
       train_number = gets.chomp.upcase
-      if type == 1 || type == 2
+      if SELECTED_VALUE.include?(type)
         add_train(train_number, type)
         puts "Счётчик грузовых поездов: #{CargoTrain.instances}"
         puts "Счётчик пассажирских поездов: #{PassengerTrain.instances}"
@@ -184,7 +190,7 @@ class Menu
         message_select_route
         show_routes
         get_route = gets.to_i
-        if get_route == 0 || get_route > @routes.length
+        if get_route.zero? || get_route > @routes.length
           message_wrong_parameter
         else
           puts 'Введите название остановки:'
@@ -254,14 +260,14 @@ class Menu
         message_select_train
         show_trains
         index_train = gets.to_i
-        if index_train == 0 || index_train > @trains.length
+        if index_train.zero? || index_train > @trains.length
           message_wrong_parameter
         else
           train = @trains[index_train - 1]
           message_select_route
           show_routes
           get_route = gets.to_i
-          if get_route == 0 || get_route > @routes.length
+          if get_route.zero? || get_route > @routes.length
             message_wrong_parameter
           else
             route = @routes[get_route - 1]
@@ -283,7 +289,7 @@ class Menu
         message_select_train
         show_trains
         index_train = gets.to_i
-        if index_train == 0 || index_train > @trains.length
+        if index_train.zero? || index_train > @trains.length
           message_wrong_parameter
         else
           train = @trains[index_train - 1]
@@ -295,7 +301,8 @@ class Menu
             puts 'Выберите вагон, который хотите прицепить:'
             input_car = gets.to_i
             car = @cars[input_car - 1]
-            if train.is_a?(CargoTrain) && car.is_a?(CargoCar) || train.is_a?(PassengerTrain) && car.is_a?(PassengerCar)
+            if train.is_a?(CargoTrain) && car.is_a?(CargoCar) \
+              || train.is_a?(PassengerTrain) && car.is_a?(PassengerCar)
               hook(train, input, car)
               break
             else
@@ -319,7 +326,7 @@ class Menu
       message_select_train
       show_trains
       index_train = gets.to_i
-      if index_train == 0 || index_train > @trains.length
+      if index_train.zero? || index_train > @trains.length
         message_wrong_parameter
       else
         train = @trains[index_train - 1]
@@ -348,7 +355,10 @@ class Menu
   end
 
   def show_route(route)
-    route.train_route.each_with_index { |station, station_index| print ' -> ' if station_index > 0; print station.name }
+    route.train_route.each_with_index do |station, station_index| \
+      print ' -> ' if station_index.positive?
+      print station.name
+    end
     print "\n"
   end
 
@@ -370,57 +380,20 @@ class Menu
 
   def show_stations
     puts 'Список всех станций'
+    Station.all.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+  end
+
+  def show_stations_with_trains
+    puts 'Список всех станций'
     Station.stations.each_with_index do |station, index|
-      puts "#{index + 1} - #{station.name} - #{station.each_trains_on_station do |train|
-                                                 puts "#{train} \
-                                                     - #{train.each_cars { |car| puts car.to_s }}"
-                                               end}"
+      puts "#{index + 1} - #{station.name} - \
+      #{station.each_trains_on_station do |train|
+        puts "#{train} - #{train.each_cars { |car| puts car.to_s }}"
+      end}"
     end
   end
 
   def show_cars
     @cars.each_with_index { |car, index| puts "#{index + 1} - #{car}" }
-  end
-
-  def add_train(train_number, type)
-    if type == 2
-      cargo_train = CargoTrain.new(train_number, 'ChinaTrain')
-      @trains << cargo_train
-      message_add_train(train_number, cargo_train.type)
-    else
-      passenger_train = PassengerTrain.new(train_number, 'ChinaTrain')
-      @trains << passenger_train
-      message_add_train(train_number, passenger_train.type)
-    end
-  end
-
-  def move(train, input)
-    if input == 1
-      train.move_forward
-      message_station(train.current_station.name)
-    elsif input == 2
-      train.move_backward
-      message_station(train.current_station.name)
-    else
-      message_wrong_input
-    end
-    separator
-    menu
-  end
-
-  def hook(train, input, car = nil)
-    if input == 1
-      train.hook_car(car)
-      message_train_cars_size(train.cars.size)
-      train.each_cars { |car| puts car }
-      # with_separator(debugger_display_cars(train))
-    elsif input == 2
-      train.unhook_car
-      message_train_cars_size(train.cars.size)
-    else
-      message_wrong_input
-    end
-    separator
-    menu
   end
 end

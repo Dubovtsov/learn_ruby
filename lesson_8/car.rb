@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'manufacturer'
+require_relative 'modules/manufacturer'
 class Car
   include Manufacturer
 

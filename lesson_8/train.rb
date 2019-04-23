@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'manufacturer'
-require_relative 'instance_counter'
+require_relative 'modules/manufacturer'
+require_relative 'modules/instance_counter'
 
 class Train
   include Manufacturer
@@ -37,7 +37,7 @@ class Train
 
   def speed_down(braking = 1)
     @speed -= braking
-    @speed = 0 if @speed < 0
+    @speed = 0 if @speed.negative?
   end
 
   def hook_car(new_car)
@@ -68,7 +68,7 @@ class Train
   end
 
   def previous_station
-    @route.train_route[@current_station_index - 1] if @current_station_index > 0
+    @route.train_route[@current_station_index - 1] if @current_station_index.positive?
   end
 
   def move_forward
@@ -77,7 +77,7 @@ class Train
   end
 
   def move_backward
-    @current_station_index -= 1 if @current_station_index > 0
+    @current_station_index -= 1 if @current_station_index.positive?
     move_train
   end
 
