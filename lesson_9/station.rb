@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'modules/instance_counter'
-require_relative 'modules/accessor'
+require_relative 'modules/accessors'
 
 class Station
   include InstanceCounter
   extend Accessors
+  include Accessors
 
   attr_reader :name, :trains
   attr_accessor_with_history :name
@@ -29,10 +30,6 @@ class Station
 
   class << self
     attr_reader :stations
-  end
-
-  def name_history
-    @values
   end
 
   def train_arrival(train)

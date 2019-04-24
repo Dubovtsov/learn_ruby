@@ -13,5 +13,6 @@ require_relative 'modules/manufacturer.rb'
 require_relative 'modules/debugger.rb'
 require_relative 'modules/instance_counter.rb'
 require_relative 'modules/train_controller.rb'
+require_relative 'modules/accessors.rb'
 
 Menu.new.run
