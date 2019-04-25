@@ -97,7 +97,7 @@ class Train
   def validate!
     raise 'Номер поезда не должен быть пустым' if train_number.empty?
     raise 'Номер поезда должен быть не менее 5 символов' if train_number.length < 5
-    raise 'Номер поезда не соответствует формату' if train_number !~ NUMBER_FORMAT
+    # raise 'Номер поезда не соответствует формату' if train_number !~ NUMBER_FORMAT
     raise 'Не указан тип поезда' if @type.empty?
   end
 

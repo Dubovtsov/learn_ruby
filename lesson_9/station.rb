@@ -2,15 +2,17 @@
 
 require_relative 'modules/instance_counter'
 require_relative 'modules/accessors'
+require_relative 'modules/validation'
 
 class Station
   include InstanceCounter
-  extend Accessors
   include Accessors
+  extend Accessors
+  include Validation
 
   attr_reader :name, :trains
   attr_accessor_with_history :name
-
+  validate :name, :presence
   @stations = []
 
   def initialize(name)
@@ -50,8 +52,8 @@ class Station
 
   protected
 
-  def validate!
-    raise 'Имя не должно быть пустым' if name.empty?
-    raise 'Имя станции должно быть не менее 4 символов' if name.length < 4
-  end
+  # def validate!
+  #   raise 'Имя не должно быть пустым' if name.empty?
+  #   raise 'Имя станции должно быть не менее 4 символов' if name.length < 4
+  # end
 end

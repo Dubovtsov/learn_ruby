@@ -7,7 +7,7 @@ module Accessors
       define_method(name) { instance_variable_get(var_name) }
       define_method("#{name}=".to_sym) do |value|
         instance_variable_set(var_name, value)
-        history_values = send(:values=)
+        history_values ||= send(:values=)
 
         # instance_variable_set("@values", [])
         history_values << value
