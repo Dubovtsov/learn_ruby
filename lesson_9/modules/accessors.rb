@@ -25,4 +25,5 @@ module Accessors
   def strong_attr_accessor(attr_name, class_name)
 
   end
+    
 end

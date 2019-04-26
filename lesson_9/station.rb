@@ -23,13 +23,6 @@ class Station
     register_instance
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
   class << self
     attr_reader :stations
   end
