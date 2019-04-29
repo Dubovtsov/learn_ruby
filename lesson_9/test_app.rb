@@ -1,4 +1,6 @@
-require_relative "modules/accessors.rb"
+# frozen_string_literal: true
+
+require_relative 'modules/accessors.rb'
 
 class TestApp
   include Accessors
@@ -11,13 +13,10 @@ class TestApp
   end
 end
 
-test = TestApp.new("moscow")
+test = TestApp.new('moscow')
 
-# puts test.name
-test.name = "Tver"
-# puts test.name
-test.name = "Kukuevo"
-test.name = "Moscow"
+test.name = 'Tver'
+test.name = 'Kukuevo'
+test.name = 'Moscow'
 print test.instance_variables
 print "\n"
-puts test.values

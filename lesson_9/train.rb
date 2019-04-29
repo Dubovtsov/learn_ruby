@@ -2,14 +2,18 @@
 
 require_relative 'modules/manufacturer'
 require_relative 'modules/instance_counter'
+require_relative 'modules/validation'
 
 class Train
   include Manufacturer
   include InstanceCounter
+  include Validation
 
   NUMBER_FORMAT = /^([A-Z0-9]{3})-?([A-Z0-9]{2})$/i.freeze
 
   attr_reader :speed, :type, :train_number, :current_station, :route, :cars
+  validate :train_number, :type, /^([A-Z0-9]{3})-?([A-Z0-9]{2})$/i.freeze
+  validate :train_number, :presence
 
   @@trains = {}
 
@@ -85,21 +89,14 @@ class Train
     "#{@type == :cargo ? 'Грузовой' : 'Пассажирский'} поезд номер #{train_number} - #{@cars.size} вагон(ов)"
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
   protected
 
-  def validate!
-    raise 'Номер поезда не должен быть пустым' if train_number.empty?
-    raise 'Номер поезда должен быть не менее 5 символов' if train_number.length < 5
-    # raise 'Номер поезда не соответствует формату' if train_number !~ NUMBER_FORMAT
-    raise 'Не указан тип поезда' if @type.empty?
-  end
+  # def validate!
+  #   raise 'Номер поезда не должен быть пустым' if train_number.empty?
+  #   raise 'Номер поезда должен быть не менее 5 символов' if train_number.length < 5
+  #   # raise 'Номер поезда не соответствует формату' if train_number !~ NUMBER_FORMAT
+  #   raise 'Не указан тип поезда' if @type.empty?
+  # end
 
   def move_train
     @current_station.train_departure(self)

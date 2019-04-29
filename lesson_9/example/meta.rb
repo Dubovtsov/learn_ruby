@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # class Foo
 #   def initialize
 #     @bar = "instance var"
